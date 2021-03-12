@@ -38,19 +38,19 @@ void initialize(char *const fileName) {
         std::string tag = element->Value();
 
         if (tag == "rect") {
-            Width = std::stod(element->Attribute("height"));
-            Height = std::stod(element->Attribute("width"));
+            Width = std::stod(element->Attribute("width"));
+            Height = std::stod(element->Attribute("height"));
 
             arena.initializeArena(
-                    std::stof(element->Attribute("initialX")),
-                    std::stof(element->Attribute("initialX")),
+                    std::stof(element->Attribute("x")),
+                    std::stof(element->Attribute("y")),
                     std::stof(element->Attribute("height")),
                     std::stof(element->Attribute("width")),
                     element->Attribute("fill")
             );
 
             printf("%s %s %s %s %s %s\n",
-                   tag.c_str(), element->Attribute("initialX"), element->Attribute("initialY"),
+                   tag.c_str(), element->Attribute("x"), element->Attribute("y"),
                    element->Attribute("width"), element->Attribute("height"), element->Attribute("fill")
             );
         } else if (tag == "circle" && p1Settings) {
@@ -91,19 +91,19 @@ void keyPress(unsigned char key, int x, int y) {
     switch (key) {
         case 'a':
         case 'A':
-            keyStatus[(int)('a')] = 1;
+            keyStatus[(int) ('a')] = 1;
             break;
         case 'd':
         case 'D':
-            keyStatus[(int)('d')] = 1;
+            keyStatus[(int) ('d')] = 1;
             break;
         case 'w':
         case 'W':
-            keyStatus[(int)('w')] = 1;
+            keyStatus[(int) ('w')] = 1;
             break;
         case 's':
         case 'S':
-            keyStatus[(int)('s')] = 1;
+            keyStatus[(int) ('s')] = 1;
             break;
         case 27:
             exit(0);
@@ -112,7 +112,7 @@ void keyPress(unsigned char key, int x, int y) {
 }
 
 void keyup(unsigned char key, int x, int y) {
-    keyStatus[(int)(key)] = 0;
+    keyStatus[(int) (key)] = 0;
     glutPostRedisplay();
 }
 
@@ -128,7 +128,7 @@ void init() {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);  // Black, no opacity(alpha).
 
     glMatrixMode(GL_PROJECTION);
-    glOrtho(arena.x,arena.x + arena.height, arena.y,arena.y + arena.height,-100,100);
+    glOrtho(arena.x, arena.x + arena.width, arena.y, arena.y + arena.height, -100, 100);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
@@ -151,17 +151,17 @@ void idle() {
     timeDiference = currentTime - previousTime;
     previousTime = currentTime;
 
-    if (keyStatus[(int)('a')]) {
+    if (keyStatus[(int) ('w')]) {
+        p1.walk(timeDiference, p2);
+    }
+    if (keyStatus[(int) ('s')]) {
+        p1.walk(-timeDiference, p2);
+    }
+    if (keyStatus[(int) ('a')]) {
         p1.rotate(timeDiference);
     }
-    if (keyStatus[(int)('d')]) {
+    if (keyStatus[(int) ('d')]) {
         p1.rotate(-timeDiference);
-    }
-    if (keyStatus[(int)('w')]) {
-        p1.walk(timeDiference);
-    }
-    if (keyStatus[(int)('s')]) {
-        p1.walk(-timeDiference);
     }
 
     glutPostRedisplay();

@@ -46,7 +46,7 @@ void Circle::setColor(const std::string &color) {
 }
 
 void Circle::draw() {
-    float piIncrement = 2 * M_PI / 18;
+    double piIncrement = 2 * M_PI / 18;
 
     glPushMatrix();
     glTranslatef(cx, cy, 0);

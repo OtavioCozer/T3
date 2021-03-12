@@ -22,4 +22,5 @@ void Arena::initializeArena(GLfloat _x, GLfloat _y, GLfloat _height, GLfloat _wi
         R = 0;
         G = 1;
         B = 0;
-    }}
+    }
+}
