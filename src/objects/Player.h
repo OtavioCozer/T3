@@ -17,8 +17,6 @@
 
 class Player {
 private:
-    Arena *arena;
-
     GLfloat x;
     GLfloat y;
     GLfloat angle;
@@ -34,8 +32,6 @@ private:
     Rectangle *rightForearm;
     Circle *rightHand;
 
-    bool checkPlayerCollision(GLfloat _x, GLfloat _y, Player &player);
-
 public:
     GLfloat getX() const;
 
@@ -43,7 +39,7 @@ public:
 
     GLfloat getR() const;
 
-    void setArena(Arena *_arena);
+    GLfloat getBarrier() const;
 
     void initializePlayer(GLfloat _x, GLfloat _y, GLfloat _angle, GLfloat _r, const std::string &color);
 
@@ -53,7 +49,11 @@ public:
 
     void rotate(GLdouble deltaTime);
 
-    void walk(GLdouble deltaTime, Player &player);
+    void walk(GLdouble deltaTime, Player &player, Arena &arena);
+
+    void treatArenaCollision(Arena &arena, GLfloat &xIncrement, GLfloat &yIncrement);
+
+    void treatPlayerCollision(GLfloat &xIncrement, GLfloat &yIncrement, Player &player, GLdouble deltaTime);
 };
 
 

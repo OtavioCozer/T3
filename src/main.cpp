@@ -81,10 +81,6 @@ void initialize(char *const fileName) {
         }
 
     }
-
-    p1.setArena(&arena);
-    p2.setArena(&arena);
-
 }
 
 void keyPress(unsigned char key, int x, int y) {
@@ -152,10 +148,10 @@ void idle() {
     previousTime = currentTime;
 
     if (keyStatus[(int) ('w')]) {
-        p1.walk(timeDiference, p2);
+        p1.walk(timeDiference, p2, arena);
     }
     if (keyStatus[(int) ('s')]) {
-        p1.walk(-timeDiference, p2);
+        p1.walk(-timeDiference, p2, arena);
     }
     if (keyStatus[(int) ('a')]) {
         p1.rotate(timeDiference);

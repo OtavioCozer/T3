@@ -16,8 +16,10 @@ GLfloat Player::getR() const {
     return head->r;
 }
 
-void Player::setArena(Arena *_arena) {
-    arena = _arena;
+
+
+GLfloat Player::getBarrier() const {
+    return getR() * BARRIER_SIZE_MULTIPLIER;
 }
 
 void Player::initializePlayer(GLfloat _x, GLfloat _y, GLfloat _angle, GLfloat _r, const std::string &color) {
@@ -58,17 +60,42 @@ void Player::rotate(GLdouble deltaTime) {
     angle += deltaTime * ANGULAR_VELOCITY;
 }
 
-void Player::walk(GLdouble deltaTime, Player &player) {
+void Player::walk(GLdouble deltaTime, Player &player, Arena &arena) {
     double rad = Utils::degToRad(angle);
-    GLfloat xAfter = x + deltaTime * LINEAR_VELOCITY * cos(rad);
-    GLfloat yAfter = y + deltaTime * LINEAR_VELOCITY * sin(rad);
+    GLfloat xIncrement = deltaTime * LINEAR_VELOCITY * cos(rad);
+    GLfloat yIncrement = deltaTime * LINEAR_VELOCITY * sin(rad);
+    treatPlayerCollision(xIncrement, yIncrement, player, deltaTime > 0 ? deltaTime : -deltaTime);
+    treatArenaCollision(arena, xIncrement, yIncrement);
 
-    if(!checkPlayerCollision(xAfter, yAfter, player)) {
-        x = xAfter;
-        y = yAfter;
+    x += xIncrement;
+    y += yIncrement;
+}
+
+void Player::treatArenaCollision(Arena &arena, GLfloat &xIncrement, GLfloat &yIncrement) {
+    if (x + xIncrement + getR() >= arena.x + arena.width || x + xIncrement - getR() <= arena.x) {
+        xIncrement = 0;
+    }
+    if (y + yIncrement + getR() >= arena.y + arena.height || y + yIncrement - getR() <= arena.y) {
+        yIncrement = 0;
     }
 }
 
-bool Player::checkPlayerCollision(GLfloat _x, GLfloat _y, Player &player) {
-    return Utils::distance(_x, _y, player.getX(), player.getY()) < getR() * BARRIER_SIZE_MULTIPLIER + player.getR();
+//TODO: COLLISION TREATMENT IS MAKING PLAYER "JUMP"
+void Player::treatPlayerCollision(GLfloat &xIncrement, GLfloat &yIncrement, Player &player, GLdouble deltaTime) {
+    bool collision = Utils::distance(x + xIncrement, y + yIncrement, player.getX(), player.getY()) <= getBarrier() + player.getR();
+
+    if(collision) {
+
+        GLfloat xNormal = getX() - player.getX();
+        GLfloat yNormal = getY() - player.getY();
+        double magnitude = Utils::magnitude(xNormal, yNormal);
+
+        xNormal /= magnitude;
+        yNormal /= magnitude;
+
+        xIncrement += deltaTime * LINEAR_VELOCITY * xNormal;
+        yIncrement += deltaTime * LINEAR_VELOCITY * yNormal;
+
+//        printf("players collided. Normal magnitude: %lf x: %f y: %f\n", Utils::magnitude(xNormal, yNormal), xNormal, yNormal);
+    }
 }
