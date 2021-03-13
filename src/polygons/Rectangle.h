@@ -25,7 +25,7 @@ public:
 
     Rectangle(GLfloat _x, GLfloat _y, GLfloat _height, GLfloat _width, const std::string &color);
 
-    Rectangle(GLfloat _x, GLfloat _y, GLfloat _height, GLfloat _width, GLfloat _R, GLfloat _G, GLfloat _B,
+    Rectangle(GLfloat _x, GLfloat _y, GLfloat _height, GLfloat _width, GLfloat r, GLfloat g, GLfloat b,
               GLfloat _angle);
 
     void draw();

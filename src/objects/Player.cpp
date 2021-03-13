@@ -17,7 +17,6 @@ GLfloat Player::getR() const {
 }
 
 
-
 GLfloat Player::getBarrier() const {
     return getR() * BARRIER_SIZE_MULTIPLIER;
 }
@@ -30,8 +29,10 @@ void Player::initializePlayer(GLfloat _x, GLfloat _y, GLfloat _angle, GLfloat _r
     head = new Circle(0, 0, _r, color);
     nose = new Circle(_r * NOSE_SIZE_MULTIPLIER, 0, _r * NOSE_DISTANCE_MULTIPLIER, color);
 
-    leftArm = new Rectangle(0, +_r, _r * ARM_LENGTH_MULTIPLIER, _r * ARM_WIDTH_MULTIPLIER, 153, 204, 50, +20);
-    rightArm = new Rectangle(0, -_r, -_r * ARM_LENGTH_MULTIPLIER, _r * ARM_WIDTH_MULTIPLIER, 153, 204, 50, -20);
+    leftArm = new Rectangle(0, +_r, _r * ARM_LENGTH_MULTIPLIER, _r * ARM_WIDTH_MULTIPLIER, (GLfloat) 153 / 255,
+                            (GLfloat) 204 / 255, (GLfloat) 50 / 255, +20);
+    rightArm = new Rectangle(0, -_r, -_r * ARM_LENGTH_MULTIPLIER, _r * ARM_WIDTH_MULTIPLIER, (GLfloat) 153 / 255,
+                             (GLfloat) 204 / 255, (GLfloat) 50 / 255, -20);
 }
 
 void Player::draw() {
@@ -90,9 +91,10 @@ void Player::treatArenaCollision(Arena &arena, GLfloat &xIncrement, GLfloat &yIn
 
 //TODO: COLLISION TREATMENT IS MAKING PLAYER "JUMP"
 void Player::treatPlayerCollision(GLfloat &xIncrement, GLfloat &yIncrement, Player &player, GLdouble deltaTime) {
-    bool collision = Utils::distance(x + xIncrement, y + yIncrement, player.getX(), player.getY()) <= getBarrier() + player.getR();
+    bool collision = Utils::distance(x + xIncrement, y + yIncrement, player.getX(), player.getY()) <=
+                     getBarrier() + player.getR();
 
-    if(collision) {
+    if (collision) {
 
         GLfloat xNormal = getX() - player.getX();
         GLfloat yNormal = getY() - player.getY();

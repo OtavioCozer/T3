@@ -28,16 +28,16 @@ Rectangle::Rectangle(GLfloat _x, GLfloat _y, GLfloat _height, GLfloat _width, co
     }
 }
 
-Rectangle::Rectangle(GLfloat _x, GLfloat _y, GLfloat _height, GLfloat _width, GLfloat _R, GLfloat _G, GLfloat _B,
+Rectangle::Rectangle(GLfloat _x, GLfloat _y, GLfloat _height, GLfloat _width, GLfloat r, GLfloat g, GLfloat b,
                      GLfloat _angle) {
     x = _x;
     y = _y;
     angle = _angle;
     height = _height;
     width = _width;
-    R = _R;
-    G = _G;
-    B = _B;
+    R = r;
+    G = g;
+    B = b;
 }
 
 void Rectangle::draw() {
