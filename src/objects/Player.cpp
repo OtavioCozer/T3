@@ -26,8 +26,12 @@ void Player::initializePlayer(GLfloat _x, GLfloat _y, GLfloat _angle, GLfloat _r
     x = _x;
     y = _y;
     angle = _angle;
+
     head = new Circle(0, 0, _r, color);
-    nose = new Circle(_r * 1.01, 0, _r * 0.2, color);
+    nose = new Circle(_r * NOSE_SIZE_MULTIPLIER, 0, _r * NOSE_DISTANCE_MULTIPLIER, color);
+
+    leftArm = new Rectangle(0, +_r, _r * ARM_LENGTH_MULTIPLIER, _r * ARM_WIDTH_MULTIPLIER, 153, 204, 50, +20);
+    rightArm = new Rectangle(0, -_r, -_r * ARM_LENGTH_MULTIPLIER, _r * ARM_WIDTH_MULTIPLIER, 153, 204, 50, -20);
 }
 
 void Player::draw() {
@@ -37,6 +41,10 @@ void Player::draw() {
     glRotatef(angle, 0, 0, 1);
     head->draw();
     nose->draw();
+
+    leftArm->draw();
+    rightArm->draw();
+
     drawBarrier();
 
     glPopMatrix();

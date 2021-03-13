@@ -14,6 +14,7 @@ class Rectangle {
 public:
     GLfloat x;
     GLfloat y;
+    GLfloat angle;
     GLfloat height;
     GLfloat width;
     GLfloat R;
@@ -23,6 +24,11 @@ public:
     Rectangle();
 
     Rectangle(GLfloat _x, GLfloat _y, GLfloat _height, GLfloat _width, const std::string &color);
+
+    Rectangle(GLfloat _x, GLfloat _y, GLfloat _height, GLfloat _width, GLfloat _R, GLfloat _G, GLfloat _B,
+              GLfloat _angle);
+
+    void draw();
 
     void setColor(const std::string &color);
 
