@@ -16,28 +16,55 @@
 
 #define BARRIER_SIZE_MULTIPLIER 2.5
 
-#define NOSE_SIZE_MULTIPLIER 1.01
-#define NOSE_DISTANCE_MULTIPLIER 0.2
+#define NOSE_SIZE_MULTIPLIER 0.2
+#define NOSE_DISTANCE_MULTIPLIER 1.01
 
 #define ARM_LENGTH_MULTIPLIER 1.3
 #define ARM_WIDTH_MULTIPLIER 0.3
 
+#define FOREARM_LENGTH_MULTIPLIER 1.3
+#define FOREARM_WIDTH_MULTIPLIER 0.3
+
+#define HAND_SIZE_MULTIPLIER 0.4
+
 class Player {
 private:
+    Circle *head;
     GLfloat x;
     GLfloat y;
     GLfloat angle;
 
-    Circle *head;
     Circle *nose;
+    GLfloat noseX;
+    GLfloat noseY;
 
     Rectangle *leftArm;
+    GLfloat leftArmX;
+    GLfloat leftArmY;
+    GLfloat leftArmAngle;
+
     Rectangle *leftForearm;
+    GLfloat leftForearmX;
+    GLfloat leftForearmY;
+    GLfloat leftForearmAngle;
+
     Circle *leftHand;
+    GLfloat leftHandX;
+    GLfloat leftHandY;
 
     Rectangle *rightArm;
+    GLfloat rightArmX;
+    GLfloat rightArmY;
+    GLfloat rightArmAngle;
+
     Rectangle *rightForearm;
+    GLfloat rightForearmX;
+    GLfloat rightForearmY;
+    GLfloat rightForearmAngle;
+
     Circle *rightHand;
+    GLfloat rightHandX;
+    GLfloat rightHandY;
 
 public:
     GLfloat getX() const;
@@ -51,6 +78,14 @@ public:
     void initializePlayer(GLfloat _x, GLfloat _y, GLfloat _angle, GLfloat _r, const std::string &color);
 
     void draw();
+
+    void drawHead();
+
+    void drawNose();
+
+    void drawLeftArm();
+
+    void drawRightArm();
 
     void drawBarrier();
 

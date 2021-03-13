@@ -11,8 +11,6 @@
 
 class Circle {
 public:
-    GLfloat cx;
-    GLfloat cy;
     GLfloat r;
     GLfloat R;
     GLfloat G;
@@ -20,11 +18,11 @@ public:
 
     Circle();
 
-    Circle(GLfloat _cx, GLfloat _cy, GLfloat _r, const std::string &color);
+    Circle(GLfloat _r, const std::string &color);
 
-    void setColor(const std::string &color);
+    Circle(GLfloat _r, GLfloat r, GLfloat g, GLfloat b);
 
-    void draw();
+    void draw() const;
 };
 
 

@@ -26,13 +26,48 @@ void Player::initializePlayer(GLfloat _x, GLfloat _y, GLfloat _angle, GLfloat _r
     y = _y;
     angle = _angle;
 
-    head = new Circle(0, 0, _r, color);
-    nose = new Circle(_r * NOSE_SIZE_MULTIPLIER, 0, _r * NOSE_DISTANCE_MULTIPLIER, color);
+    noseX = _r * NOSE_DISTANCE_MULTIPLIER;
+    noseY = 0;
 
-    leftArm = new Rectangle(0, +_r, _r * ARM_LENGTH_MULTIPLIER, _r * ARM_WIDTH_MULTIPLIER, (GLfloat) 153 / 255,
-                            (GLfloat) 204 / 255, (GLfloat) 50 / 255, +20);
-    rightArm = new Rectangle(0, -_r, -_r * ARM_LENGTH_MULTIPLIER, _r * ARM_WIDTH_MULTIPLIER, (GLfloat) 153 / 255,
-                             (GLfloat) 204 / 255, (GLfloat) 50 / 255, -20);
+    head = new Circle(_r, color);
+    nose = new Circle(_r * NOSE_SIZE_MULTIPLIER, color);
+
+
+    leftArmX = 0;
+    leftArmY = +_r;
+    leftArmAngle = 30;
+
+    rightArmX = 0;
+    rightArmY = -_r;
+    rightArmAngle = 150;
+
+    leftArm = new Rectangle(_r * ARM_LENGTH_MULTIPLIER, _r * ARM_WIDTH_MULTIPLIER, (GLfloat) 153 / 255,
+                            (GLfloat) 204 / 255, (GLfloat) 50 / 255);
+    rightArm = new Rectangle(_r * ARM_LENGTH_MULTIPLIER, _r * ARM_WIDTH_MULTIPLIER, (GLfloat) 153 / 255,
+                             (GLfloat) 204 / 255, (GLfloat) 50 / 255);
+
+    leftForearmX = 0;
+    leftForearmY = _r * ARM_LENGTH_MULTIPLIER;
+    leftForearmAngle = -110;
+
+    rightForearmX = 0;
+    rightForearmY = _r * ARM_LENGTH_MULTIPLIER;
+    rightForearmAngle = +110;
+
+    leftForearm = new Rectangle(_r * FOREARM_LENGTH_MULTIPLIER, _r * FOREARM_WIDTH_MULTIPLIER, (GLfloat) 153 / 255,
+                                (GLfloat) 204 / 255, (GLfloat) 50 / 255);
+    rightForearm = new Rectangle(_r * FOREARM_LENGTH_MULTIPLIER, _r * FOREARM_WIDTH_MULTIPLIER, (GLfloat) 153 / 255,
+                                 (GLfloat) 204 / 255, (GLfloat) 50 / 255);
+
+    leftHandX = 0;
+    leftHandY = _r * FOREARM_LENGTH_MULTIPLIER;
+
+    rightHandX = 0;
+    rightHandY = _r * FOREARM_LENGTH_MULTIPLIER;
+
+    leftHand = new Circle(_r * HAND_SIZE_MULTIPLIER, (GLfloat) 131 / 255, 0, 0);
+    rightHand = new Circle(_r * HAND_SIZE_MULTIPLIER, (GLfloat) 131 / 255, 0, 0);
+
 }
 
 void Player::draw() {
@@ -40,13 +75,63 @@ void Player::draw() {
 
     glTranslatef(x, y, 0);
     glRotatef(angle, 0, 0, 1);
-    head->draw();
-    nose->draw();
 
-    leftArm->draw();
-    rightArm->draw();
+    drawHead();
+    drawNose();
+
+    drawLeftArm();
+    drawRightArm();
 
     drawBarrier();
+
+    glPopMatrix();
+}
+
+
+void Player::drawHead() {
+    head->draw();
+}
+
+void Player::drawNose() {
+    glPushMatrix();
+
+    glTranslatef(noseX, noseY, 0);
+    nose->draw();
+
+    glPopMatrix();
+}
+
+
+void Player::drawLeftArm() {
+    glPushMatrix();
+
+    glTranslatef(leftArmX, leftArmY, 0);
+    glRotatef(leftArmAngle, 0, 0, 1);
+    leftArm->draw();
+
+    glTranslatef(leftForearmX, leftForearmY, 0);
+    glRotatef(leftForearmAngle, 0, 0, 1);
+    leftForearm->draw();
+
+    glTranslatef(leftHandX, leftHandY, 0);
+    leftHand->draw();
+
+    glPopMatrix();
+}
+
+void Player::drawRightArm() {
+    glPushMatrix();
+
+    glTranslatef(rightArmX, rightArmY, 0);
+    glRotatef(rightArmAngle, 0, 0, 1);
+    rightArm->draw();
+
+    glTranslatef(rightForearmX, rightForearmY, 0);
+    glRotatef(rightForearmAngle, 0, 0, 1);
+    rightForearm->draw();
+
+    glTranslatef(rightHandX, rightHandY, 0);
+    rightHand->draw();
 
     glPopMatrix();
 }
