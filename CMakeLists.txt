@@ -19,7 +19,7 @@ add_executable(
         src/objects/Player.h
         src/objects/Arena.cpp
         src/objects/Arena.h
-        src/services/Utils.cpp src/services/Utils.h)
+        src/services/Utils.cpp src/services/Utils.h src/input/Mouse.cpp src/input/Mouse.h)
 
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)

@@ -49,10 +49,12 @@ void Player::initializePlayer(GLfloat _x, GLfloat _y, GLfloat _angle, GLfloat _r
     leftForearmX = 0;
     leftForearmY = _r * ARM_LENGTH_MULTIPLIER;
     leftForearmAngle = -110;
+    leftArmRotation = 0;
 
     rightForearmX = 0;
     rightForearmY = _r * ARM_LENGTH_MULTIPLIER;
     rightForearmAngle = +110;
+    rightArmRotation = 0;
 
     leftForearm = new Rectangle(_r * FOREARM_LENGTH_MULTIPLIER, _r * FOREARM_WIDTH_MULTIPLIER, (GLfloat) 153 / 255,
                                 (GLfloat) 204 / 255, (GLfloat) 50 / 255);
@@ -106,11 +108,11 @@ void Player::drawLeftArm() {
     glPushMatrix();
 
     glTranslatef(leftArmX, leftArmY, 0);
-    glRotatef(leftArmAngle, 0, 0, 1);
+    glRotatef(leftArmAngle + leftArmRotation, 0, 0, 1);
     leftArm->draw();
 
     glTranslatef(leftForearmX, leftForearmY, 0);
-    glRotatef(leftForearmAngle, 0, 0, 1);
+    glRotatef(leftForearmAngle + leftForearmRotation, 0, 0, 1);
     leftForearm->draw();
 
     glTranslatef(leftHandX, leftHandY, 0);
@@ -123,11 +125,11 @@ void Player::drawRightArm() {
     glPushMatrix();
 
     glTranslatef(rightArmX, rightArmY, 0);
-    glRotatef(rightArmAngle, 0, 0, 1);
+    glRotatef(rightArmAngle + rightArmRotation, 0, 0, 1);
     rightArm->draw();
 
     glTranslatef(rightForearmX, rightForearmY, 0);
-    glRotatef(rightForearmAngle, 0, 0, 1);
+    glRotatef(rightForearmAngle + rightForearmRotation, 0, 0, 1);
     rightForearm->draw();
 
     glTranslatef(rightHandX, rightHandY, 0);
@@ -136,7 +138,7 @@ void Player::drawRightArm() {
     glPopMatrix();
 }
 
-void Player::drawBarrier() {
+void Player::drawBarrier() const {
     double piIncrement = 2 * M_PI / 36;
     double radius = getR() * BARRIER_SIZE_MULTIPLIER;
 
@@ -163,6 +165,45 @@ void Player::walk(GLdouble deltaTime, Player &player, Arena &arena) {
 
     x += xIncrement;
     y += yIncrement;
+}
+
+//TODO: QUANDO O SOCO ESTA VOLTANDO AOS POUCOS SE O JOGADOR CLICAR PARA SOCAR NOVAMENTE O SOCO VOLTA INSTANTANEO. PARA OBSERVAR O EFEITO ABAIXE A VELOCIDADE DE VOLTA DO SOCO
+//TODO: AJUSTAR LOGICA DO SOCO ATUALMENTE SEMPPRE CONSIDERA O CLICK INICIAL PARA MEDIR A DISTANCIA. TROCAR O CLICL INICIAL PELA POSICAO EM QUE O MOVIMENTO SE INVERTEU
+void Player::treatPunch(GLdouble deltaTime, Mouse &mouse, Arena &arena) {
+    GLfloat rotationPercent = (mouse.movedX - mouse.clickX) / (arena.width / 2);
+
+    if (mouse.button == 0 && mouse.state == 0 && mouse.movedX - mouse.clickX <= arena.width / 2) {
+        rightArmRotation = ARM_ANGULAR_AMPLITUDE * rotationPercent >= 0 ? ARM_ANGULAR_AMPLITUDE * rotationPercent : 0;
+        rightForearmRotation =
+                -FOREARM_ANGULAR_AMPLITUDE * rotationPercent <= 0 ? -FOREARM_ANGULAR_AMPLITUDE * rotationPercent : 0;
+    }
+    if (mouse.button == 0 && mouse.state == 0 && -(mouse.movedX - mouse.clickX) <= arena.width / 2) {
+        leftArmRotation = ARM_ANGULAR_AMPLITUDE * rotationPercent <= 0 ? ARM_ANGULAR_AMPLITUDE * rotationPercent : 0;
+        leftForearmRotation =
+                -FOREARM_ANGULAR_AMPLITUDE * rotationPercent >= 0 ? -FOREARM_ANGULAR_AMPLITUDE * rotationPercent : 0;
+    }
+
+    //TODO: OLHAR SE REALMENTE || EH O OPERADOR CORRETO -> PROVAVELMENTE EH
+
+    if (mouse.state == 1 && (rightArmRotation > 0 || rightForearmRotation < 0)) {
+        rightArmRotation = rightArmRotation - ARM_ANGULAR_VELOCITY * deltaTime >= 0 ? rightArmRotation -
+                                                                                      ARM_ANGULAR_VELOCITY * deltaTime
+                                                                                    : 0;
+        rightForearmRotation =
+                rightForearmRotation + FOREARM_ANGULAR_VELOCITY * deltaTime <= 0 ? rightForearmRotation +
+                                                                                   FOREARM_ANGULAR_VELOCITY * deltaTime
+                                                                                 : 0;
+    }
+    if (mouse.state == 1 && (leftArmRotation < 0 || leftForearmRotation > 0)) {
+        leftArmRotation = leftArmRotation + ARM_ANGULAR_VELOCITY * deltaTime <= 0 ? leftArmRotation +
+                                                                                    ARM_ANGULAR_VELOCITY * deltaTime
+                                                                                  : 0;
+        leftForearmRotation =
+                leftForearmRotation - FOREARM_ANGULAR_VELOCITY * deltaTime >= 0 ? leftForearmRotation -
+                                                                                  FOREARM_ANGULAR_VELOCITY * deltaTime
+                                                                                : 0;
+    }
+
 }
 
 void Player::treatArenaCollision(Arena &arena, GLfloat &xIncrement, GLfloat &yIncrement) {

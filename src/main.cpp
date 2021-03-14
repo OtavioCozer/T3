@@ -9,8 +9,10 @@
 #include "polygons/Circle.h"
 #include "objects/Player.h"
 #include "objects/Arena.h"
+#include "input/Mouse.h"
 
 int keyStatus[256];
+Mouse mouse;
 
 GLdouble Width;
 GLdouble Height;
@@ -118,6 +120,24 @@ void ResetKeyStatus() {
     }
 }
 
+void motion(int x, int y) {
+    mouse.movedX = (GLfloat) x + arena.x;
+    mouse.movedY = arena.y + arena.height - (GLfloat) y;
+
+    glutPostRedisplay();
+}
+
+void mouseFunc(int button, int state, int x, int y) {
+    mouse.button = button;
+    mouse.state = state;
+    mouse.clickX = (GLfloat) x + arena.x;
+    mouse.clickY = arena.y + arena.height - (GLfloat) y;
+
+//    printf("buttom: %d : state: %d\n", button, state);
+
+    motion(x, y);
+}
+
 void init() {
     ResetKeyStatus();
     // The color the windows will redraw. Its done to erase the previous frame.
@@ -160,6 +180,9 @@ void idle() {
         p1.rotate(-timeDiference);
     }
 
+    p1.treatPunch(timeDiference, mouse, arena);
+
+
     glutPostRedisplay();
 }
 
@@ -176,10 +199,15 @@ int main(int argc, char *argv[]) {
     glutCreateWindow("T2");
 
     init();
+
     glutDisplayFunc(display);
     glutIdleFunc(idle);
+
     glutKeyboardFunc(keyPress);
     glutKeyboardUpFunc(keyup);
+
+    glutMotionFunc(motion);
+    glutMouseFunc(mouseFunc);
 
     glutMainLoop();
 

@@ -10,6 +10,7 @@
 #include "../polygons/Rectangle.h"
 #include "../services/Utils.h"
 #include "Arena.h"
+#include "../input/Mouse.h"
 
 #define ANGULAR_VELOCITY 0.2
 #define LINEAR_VELOCITY 0.5
@@ -19,13 +20,19 @@
 #define NOSE_SIZE_MULTIPLIER 0.2
 #define NOSE_DISTANCE_MULTIPLIER 1.01
 
-#define ARM_LENGTH_MULTIPLIER 1.3
-#define ARM_WIDTH_MULTIPLIER 0.3
+#define ARM_LENGTH_MULTIPLIER 2.2
+#define ARM_WIDTH_MULTIPLIER 0.25
 
-#define FOREARM_LENGTH_MULTIPLIER 1.3
-#define FOREARM_WIDTH_MULTIPLIER 0.3
+#define FOREARM_LENGTH_MULTIPLIER 2
+#define FOREARM_WIDTH_MULTIPLIER 0.25
 
 #define HAND_SIZE_MULTIPLIER 0.4
+
+#define ARM_ANGULAR_AMPLITUDE 130
+#define FOREARM_ANGULAR_AMPLITUDE 45
+
+#define ARM_ANGULAR_VELOCITY 1
+#define FOREARM_ANGULAR_VELOCITY 1
 
 class Player {
 private:
@@ -42,11 +49,13 @@ private:
     GLfloat leftArmX;
     GLfloat leftArmY;
     GLfloat leftArmAngle;
+    GLfloat leftArmRotation;
 
     Rectangle *leftForearm;
     GLfloat leftForearmX;
     GLfloat leftForearmY;
     GLfloat leftForearmAngle;
+    GLfloat leftForearmRotation;
 
     Circle *leftHand;
     GLfloat leftHandX;
@@ -56,15 +65,22 @@ private:
     GLfloat rightArmX;
     GLfloat rightArmY;
     GLfloat rightArmAngle;
+    GLfloat rightArmRotation;
 
     Rectangle *rightForearm;
     GLfloat rightForearmX;
     GLfloat rightForearmY;
     GLfloat rightForearmAngle;
+    GLfloat rightForearmRotation;
 
     Circle *rightHand;
     GLfloat rightHandX;
     GLfloat rightHandY;
+
+
+    void treatArenaCollision(Arena &arena, GLfloat &xIncrement, GLfloat &yIncrement);
+
+    void treatPlayerCollision(GLfloat &xIncrement, GLfloat &yIncrement, Player &player, GLdouble deltaTime);
 
 public:
     GLfloat getX() const;
@@ -87,15 +103,13 @@ public:
 
     void drawRightArm();
 
-    void drawBarrier();
+    void drawBarrier() const;
 
     void rotate(GLdouble deltaTime);
 
     void walk(GLdouble deltaTime, Player &player, Arena &arena);
 
-    void treatArenaCollision(Arena &arena, GLfloat &xIncrement, GLfloat &yIncrement);
-
-    void treatPlayerCollision(GLfloat &xIncrement, GLfloat &yIncrement, Player &player, GLdouble deltaTime);
+    void treatPunch(GLdouble deltaTime, Mouse &mouse, Arena &arena);
 };
 
 
