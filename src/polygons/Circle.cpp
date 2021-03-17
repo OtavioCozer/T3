@@ -12,19 +12,9 @@ Circle::Circle() {
 Circle::Circle(GLfloat _r, const std::string &color) {
     r = _r;
 
-    if (color == "blue") {
-        R = 0;
-        G = 0;
-        B = 1;
-    } else if(color == "red") {
-        R = 1;
-        G = 0;
-        B = 0;
-    } else if(color == "green") {
-        R = 0;
-        G = 1;
-        B = 0;
-    }
+    R = color == "red";
+    G = color == "green";
+    B = color == "blue";
 }
 
 void Circle::draw() const {

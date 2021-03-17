@@ -3,7 +3,3 @@
 //
 
 #include "Mouse.h"
-
-Mouse::Mouse() {
-    state = 1;
-}

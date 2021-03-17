@@ -15,3 +15,17 @@ double Utils::distance(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2) {
 double Utils::magnitude(GLfloat x, GLfloat y) {
     return sqrt(pow(x, 2) + pow(y, 2));
 }
+
+void Utils::translate(GLfloat &x, GLfloat &y, GLfloat tx, GLfloat ty) {
+    x += tx;
+    y += ty;
+}
+
+void Utils::rotate(GLfloat &x, GLfloat &y, GLfloat deg) {
+    double rad = degToRad(deg);
+    GLfloat tempox = x;
+    GLfloat tempoy = y;
+
+    x = tempox * cos(rad) - tempoy * sin(rad);
+    y = tempox * sin(rad) + tempoy * cos(rad);
+}

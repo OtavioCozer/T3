@@ -2,6 +2,7 @@
 // Created by otavio on 12/03/2021.
 //
 
+#include <GL/glut.h>
 #include "Player.h"
 
 GLfloat Player::getX() const {
@@ -10,6 +11,10 @@ GLfloat Player::getX() const {
 
 GLfloat Player::getY() const {
     return y;
+}
+
+GLfloat Player::getHandSize() const {
+    return head->r * HAND_SIZE_MULTIPLIER;
 }
 
 GLfloat Player::getR() const {
@@ -21,10 +26,17 @@ GLfloat Player::getBarrier() const {
     return getR() * BARRIER_SIZE_MULTIPLIER;
 }
 
+int Player::getScore() const {
+    return score;
+}
+
 void Player::initializePlayer(GLfloat _x, GLfloat _y, GLfloat _angle, GLfloat _r, const std::string &color) {
     x = _x;
     y = _y;
     angle = _angle;
+
+    score = 0;
+    bypassMouse = false;
 
     noseX = _r * NOSE_DISTANCE_MULTIPLIER;
     noseY = 0;
@@ -169,7 +181,7 @@ void Player::walk(GLdouble deltaTime, Player &player, Arena &arena) {
 
 //TODO: QUANDO O SOCO ESTA VOLTANDO AOS POUCOS SE O JOGADOR CLICAR PARA SOCAR NOVAMENTE O SOCO VOLTA INSTANTANEO. PARA OBSERVAR O EFEITO ABAIXE A VELOCIDADE DE VOLTA DO SOCO
 //TODO: AJUSTAR LOGICA DO SOCO ATUALMENTE SEMPPRE CONSIDERA O CLICK INICIAL PARA MEDIR A DISTANCIA. TROCAR O CLICL INICIAL PELA POSICAO EM QUE O MOVIMENTO SE INVERTEU
-void Player::treatPunch(GLdouble deltaTime, Mouse &mouse, Arena &arena) {
+void Player::treatPunch(GLdouble deltaTime, Mouse &mouse, Arena &arena, Player &player) {
     GLfloat rotationPercent = (mouse.movedX - mouse.clickX) / (arena.width / 2);
 
     if (mouse.button == 0 && mouse.state == 0 && mouse.movedX - mouse.clickX <= arena.width / 2) {
@@ -184,7 +196,6 @@ void Player::treatPunch(GLdouble deltaTime, Mouse &mouse, Arena &arena) {
     }
 
     //TODO: OLHAR SE REALMENTE || EH O OPERADOR CORRETO -> PROVAVELMENTE EH
-
     if (mouse.state == 1 && (rightArmRotation > 0 || rightForearmRotation < 0)) {
         rightArmRotation = rightArmRotation - ARM_ANGULAR_VELOCITY * deltaTime >= 0 ? rightArmRotation -
                                                                                       ARM_ANGULAR_VELOCITY * deltaTime
@@ -193,6 +204,10 @@ void Player::treatPunch(GLdouble deltaTime, Mouse &mouse, Arena &arena) {
                 rightForearmRotation + FOREARM_ANGULAR_VELOCITY * deltaTime <= 0 ? rightForearmRotation +
                                                                                    FOREARM_ANGULAR_VELOCITY * deltaTime
                                                                                  : 0;
+
+//        if (rightArmRotation == 0 && rightForearmRotation == 0) {
+//            bypassMouse = false;
+//        }
     }
     if (mouse.state == 1 && (leftArmRotation < 0 || leftForearmRotation > 0)) {
         leftArmRotation = leftArmRotation + ARM_ANGULAR_VELOCITY * deltaTime <= 0 ? leftArmRotation +
@@ -202,11 +217,20 @@ void Player::treatPunch(GLdouble deltaTime, Mouse &mouse, Arena &arena) {
                 leftForearmRotation - FOREARM_ANGULAR_VELOCITY * deltaTime >= 0 ? leftForearmRotation -
                                                                                   FOREARM_ANGULAR_VELOCITY * deltaTime
                                                                                 : 0;
+
+//        if (leftArmRotation == 0 && leftForearmRotation == 0) {
+//            bypassMouse = false;
+//        }
+    }
+
+    if ((getLeftHandCollision(player) || getRightHandCollision(player)) && mouse.state == 0) {
+        mouse.state = 1;
+        score++;
     }
 
 }
 
-void Player::treatArenaCollision(Arena &arena, GLfloat &xIncrement, GLfloat &yIncrement) {
+void Player::treatArenaCollision(Arena &arena, GLfloat &xIncrement, GLfloat &yIncrement) const {
     if (x + xIncrement + getR() >= arena.x + arena.width || x + xIncrement - getR() <= arena.x) {
         xIncrement = 0;
     }
@@ -216,7 +240,7 @@ void Player::treatArenaCollision(Arena &arena, GLfloat &xIncrement, GLfloat &yIn
 }
 
 //TODO: COLLISION TREATMENT IS MAKING PLAYER "JUMP"
-void Player::treatPlayerCollision(GLfloat &xIncrement, GLfloat &yIncrement, Player &player, GLdouble deltaTime) {
+void Player::treatPlayerCollision(GLfloat &xIncrement, GLfloat &yIncrement, Player &player, GLdouble deltaTime) const {
     bool collision = Utils::distance(x + xIncrement, y + yIncrement, player.getX(), player.getY()) <=
                      getBarrier() + player.getR();
 
@@ -234,4 +258,52 @@ void Player::treatPlayerCollision(GLfloat &xIncrement, GLfloat &yIncrement, Play
 
 //        printf("players collided. Normal magnitude: %lf x: %f y: %f\n", Utils::magnitude(xNormal, yNormal), xNormal, yNormal);
     }
+}
+
+void Player::getLeftHandPosition() {
+    GLfloat handX = 0;
+    GLfloat handY = 0;
+
+    Utils::translate(handX, handY, leftHandX, leftHandY);
+
+    Utils::rotate(handX, handY, leftForearmAngle + leftForearmRotation);
+    Utils::translate(handX, handY, leftForearmX, leftForearmY);
+
+    Utils::rotate(handX, handY, leftArmAngle + leftArmRotation);
+    Utils::translate(handX, handY, leftArmX, leftArmY);
+
+    Utils::rotate(handX, handY, angle);
+    Utils::translate(handX, handY, x, y);
+
+    leftFistX = handX;
+    leftFistY = handY;
+}
+
+void Player::getRightHandPosition() {
+    GLfloat handX = 0;
+    GLfloat handY = 0;
+
+    Utils::translate(handX, handY, rightHandX, rightHandY);
+
+    Utils::rotate(handX, handY, rightForearmAngle + rightForearmRotation);
+    Utils::translate(handX, handY, rightForearmX, rightForearmY);
+
+    Utils::rotate(handX, handY, rightArmAngle + rightArmRotation);
+    Utils::translate(handX, handY, rightArmX, rightArmY);
+
+    Utils::rotate(handX, handY, angle);
+    Utils::translate(handX, handY, x, y);
+
+    rightFistX = handX;
+    rightFistY = handY;
+}
+
+bool Player::getLeftHandCollision(Player &player) {
+    getLeftHandPosition();
+    return Utils::distance(player.x, player.y, leftFistX, leftFistY) < getHandSize() + player.getR();
+}
+
+bool Player::getRightHandCollision(Player &player) {
+    getRightHandPosition();
+    return Utils::distance(player.x, player.y, rightFistX, rightFistY) < getHandSize() + player.getR();
 }

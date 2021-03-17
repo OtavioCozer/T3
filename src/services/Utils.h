@@ -7,6 +7,7 @@
 
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include <cstdio>
 #include <cmath>
 
 class Utils {
@@ -16,6 +17,10 @@ public:
     static double distance(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2);
 
     static double magnitude(GLfloat x, GLfloat y);
+
+    static void translate(GLfloat &x, GLfloat &y, GLfloat tx, GLfloat ty);
+
+    static void rotate(GLfloat &x, GLfloat &y, GLfloat deg);
 };
 
 

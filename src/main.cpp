@@ -20,6 +20,8 @@ GLdouble Height;
 Arena arena;
 Player p1, p2;
 
+bool gameOver = false;
+
 void initialize(char *const fileName) {
     TiXmlDocument doc(fileName);
     bool loadOkay = doc.LoadFile();
@@ -85,6 +87,39 @@ void initialize(char *const fileName) {
     }
 }
 
+static char str[1000];
+void *font = GLUT_BITMAP_9_BY_15;
+
+void showScore(GLfloat x, GLfloat y) {
+    glColor3f(1, 0, 0);
+    //Cria a string a ser impressa
+    char *tmpStr;
+    sprintf(str, "Jogador: %d Computador: %d", p1.getScore(), p2.getScore());
+    //Define a posicao onde vai comecar a imprimir
+    glRasterPos2f(x, y);
+    //Imprime um caractere por vez
+    tmpStr = str;
+    while (*tmpStr) {
+        glutBitmapCharacter(font, *tmpStr);
+        tmpStr++;
+    }
+}
+
+void showGameOver(GLfloat x, GLfloat y) {
+    glColor3f(1, 0, 0);
+    //Cria a string a ser impressa
+    char *tmpStr;
+    sprintf(str, "VOCE MAMOU");
+    //Define a posicao onde vai comecar a imprimir
+    glRasterPos2f(x, y);
+    //Imprime um caractere por vez
+    tmpStr = str;
+    while (*tmpStr) {
+        glutBitmapCharacter(font, *tmpStr);
+        tmpStr++;
+    }
+}
+
 void keyPress(unsigned char key, int x, int y) {
     switch (key) {
         case 'a':
@@ -103,8 +138,16 @@ void keyPress(unsigned char key, int x, int y) {
         case 'S':
             keyStatus[(int) ('s')] = 1;
             break;
+        case 'y':
+        case 'Y':
+
+            break;
+        case 'n':
+        case 'N':
         case 27:
             exit(0);
+        default:
+            break;
     }
     glutPostRedisplay();
 }
@@ -124,6 +167,19 @@ void motion(int x, int y) {
     mouse.movedX = (GLfloat) x + arena.x;
     mouse.movedY = arena.y + arena.height - (GLfloat) y;
 
+    //TODO: OLHAR DEPOIS
+//    if (mouse.justClicked) {
+//        mouse.increasing = mouse.movedX > 0;
+//    } else if(mouse.increasing && mouse.movedX < -Width/10) {
+//        mouse.state = 0;
+//        mouse.clickX = (GLfloat) x + arena.x;
+//        mouse.clickY = arena.y + arena.height - (GLfloat) y;
+//    } else if(mouse.movedX > Width/10) {
+//        mouse.state = 0;
+//        mouse.clickX = (GLfloat) x + arena.x;
+//        mouse.clickY = arena.y + arena.height - (GLfloat) y;
+//    }
+
     glutPostRedisplay();
 }
 
@@ -132,13 +188,17 @@ void mouseFunc(int button, int state, int x, int y) {
     mouse.state = state;
     mouse.clickX = (GLfloat) x + arena.x;
     mouse.clickY = arena.y + arena.height - (GLfloat) y;
-
-//    printf("buttom: %d : state: %d\n", button, state);
+//TODO: OLHAR DEPOIS
+//    if(button == 0 && state == 0) {
+//        mouse.justClicked = true;
+//    }
 
     motion(x, y);
 }
 
 void init() {
+    mouse.state = 1;
+    mouse.justClicked = false;
     ResetKeyStatus();
     // The color the windows will redraw. Its done to erase the previous frame.
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);  // Black, no opacity(alpha).
@@ -154,34 +214,43 @@ void display() {
 
     glClear(GL_COLOR_BUFFER_BIT);
 
-    p1.draw();
-    p2.draw();
+    gameOver = p1.getScore() >= 10 || p2.getScore() >= 10;
+
+    if (!gameOver) {
+        p1.draw();
+        p2.draw();
+
+        showScore(arena.x + 10, arena.y + 10);
+    } else {
+        showGameOver(arena.x + arena.width / 2, arena.y + arena.height / 2);
+    }
 
     glutSwapBuffers();
 }
 
 void idle() {
     static GLdouble previousTime = glutGet(GLUT_ELAPSED_TIME);
-    GLdouble currentTime, timeDiference;
+    GLdouble currentTime, timeDifference;
     currentTime = glutGet(GLUT_ELAPSED_TIME);
-    timeDiference = currentTime - previousTime;
+    timeDifference = currentTime - previousTime;
     previousTime = currentTime;
 
     if (keyStatus[(int) ('w')]) {
-        p1.walk(timeDiference, p2, arena);
+        p1.walk(timeDifference, p2, arena);
+        mouse.state = 1;
     }
     if (keyStatus[(int) ('s')]) {
-        p1.walk(-timeDiference, p2, arena);
+        p1.walk(-timeDifference, p2, arena);
+        mouse.state = 1;
     }
     if (keyStatus[(int) ('a')]) {
-        p1.rotate(timeDiference);
+        p1.rotate(timeDifference);
     }
     if (keyStatus[(int) ('d')]) {
-        p1.rotate(-timeDiference);
+        p1.rotate(-timeDifference);
     }
 
-    p1.treatPunch(timeDiference, mouse, arena);
-
+    p1.treatPunch(timeDifference, mouse, arena, p2);
 
     glutPostRedisplay();
 }

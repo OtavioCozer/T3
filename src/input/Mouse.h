@@ -16,10 +16,11 @@ public:
     GLfloat movedX;
     GLfloat movedY;
 
+    bool increasing;
+    bool justClicked;
+
     int button;
     int state;
-
-    Mouse();
 };
 
 
