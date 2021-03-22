@@ -26,6 +26,10 @@ GLfloat Player::getBarrier() const {
     return getR() * BARRIER_SIZE_MULTIPLIER;
 }
 
+void Player::setAngle(GLfloat _angle) {
+    angle = _angle;
+}
+
 int Player::getScore() const {
     return score;
 }

@@ -14,6 +14,8 @@ class Utils {
 public:
     static double degToRad(GLfloat deg);
 
+    static double radToDeg(GLfloat rad);
+
     static double distance(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2);
 
     static double magnitude(GLfloat x, GLfloat y);

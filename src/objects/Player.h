@@ -110,6 +110,8 @@ public:
 
     GLfloat getBarrier() const;
 
+    void setAngle(GLfloat _angle);
+
     int getScore() const;
 
     void initializePlayer(GLfloat _x, GLfloat _y, GLfloat _angle, GLfloat _r, const std::string &color);

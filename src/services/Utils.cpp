@@ -8,6 +8,11 @@ double Utils::degToRad(GLfloat deg) {
     return deg * (M_PI / 180);
 }
 
+double Utils::radToDeg(GLfloat rad) {
+    return rad * (180 / M_PI);
+}
+
+
 double Utils::distance(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2) {
     return sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
 }
