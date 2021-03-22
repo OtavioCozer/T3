@@ -35,7 +35,7 @@ void initialize(char *const fileName) {
     }
 
     TiXmlNode *pParent = doc.FirstChild();
-    std::string p1Color = "red";
+    std::string p1Color = "green";
     GLfloat cy1;
 
     for (TiXmlNode *pChild = pParent->FirstChild(); pChild != nullptr; pChild = pChild->NextSibling()) {

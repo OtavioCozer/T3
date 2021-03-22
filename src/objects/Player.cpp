@@ -100,7 +100,7 @@ void Player::draw() {
     drawLeftArm();
     drawRightArm();
 
-    drawBarrier();
+//    drawBarrier();
 
     glPopMatrix();
 }
