@@ -12,6 +12,11 @@
 #include "objects/Player.h"
 #include "objects/Arena.h"
 #include "input/Mouse.h"
+#include "model/Model.h"
+#include "objects/ModelPlayer.h"
+
+#include <unistd.h>
+
 
 int keyStatus[256];
 Mouse mouse, p2Mouse;
@@ -21,6 +26,8 @@ GLdouble Height;
 
 Arena arena;
 Player p1, p2;
+ModelPlayer mp1, mp2;
+Model m;
 
 bool gameOver = false;
 
@@ -115,7 +122,7 @@ void showGameOver(GLfloat x, GLfloat y) {
     glColor3f(1, 0, 0);
     //Cria a string a ser impressa
     char *tmpStr;
-    if(p1.getScore() >= 10) {
+    if (p1.getScore() >= 10) {
         sprintf(str, "VOCE GANHOU");
     } else {
         sprintf(str, "VOCE PERDEU");
@@ -148,8 +155,9 @@ void keyPress(unsigned char key, int x, int y) {
         case 'S':
             keyStatus[(int) ('s')] = 1;
             break;
-        case 'y':
-        case 'Y':
+        case 'q':
+        case 'Q':
+            keyStatus[(int) ('q')] = 1;
             break;
         case 'n':
         case 'N':
@@ -181,19 +189,6 @@ void motion(int x, int y) {
     mouse.movedX = (GLfloat) x + arena.x;
     mouse.movedY = arena.y + arena.height - (GLfloat) y;
 
-    //TODO: OLHAR DEPOIS
-//    if (mouse.justClicked) {
-//        mouse.increasing = mouse.movedX > 0;
-//    } else if(mouse.increasing && mouse.movedX < -Width/10) {
-//        mouse.state = 0;
-//        mouse.clickX = (GLfloat) x + arena.x;
-//        mouse.clickY = arena.y + arena.height - (GLfloat) y;
-//    } else if(mouse.movedX > Width/10) {
-//        mouse.state = 0;
-//        mouse.clickX = (GLfloat) x + arena.x;
-//        mouse.clickY = arena.y + arena.height - (GLfloat) y;
-//    }
-
     glutPostRedisplay();
 }
 
@@ -202,10 +197,6 @@ void mouseFunc(int button, int state, int x, int y) {
     mouse.state = state;
     mouse.clickX = (GLfloat) x + arena.x;
     mouse.clickY = arena.y + arena.height - (GLfloat) y;
-//TODO: OLHAR DEPOIS
-//    if(button == 0 && state == 0) {
-//        mouse.justClicked = true;
-//    }
 
     motion(x, y);
 }
@@ -214,27 +205,81 @@ void init() {
     mouse.state = p2Mouse.state = 1;
     mouse.justClicked = false;
     ResetKeyStatus();
-    // The color the windows will redraw. Its done to erase the previous frame.
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);  // Black, no opacity(alpha).
 
+    m.initialize();
+    mp1.initialize(m);
+
+
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_TEXTURE_2D);
+    glEnable(GL_LIGHTING);
+    glShadeModel(GL_SMOOTH);
+
+    glDepthFunc(GL_LEQUAL);
+}
+
+void reshape(int w, int h) {
+    //Ajusta o tamanho da tela com a janela de visualizacao
+    glViewport(0, 0, (GLsizei) w, (GLsizei) h);
     glMatrixMode(GL_PROJECTION);
-    glOrtho(arena.x, arena.x + arena.width, arena.y, arena.y + arena.height, -100, 100);
-    glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+    if (w <= h) {
+        gluPerspective(45, (GLfloat) h / (GLfloat) w, 1, 1000);
+    } else {
+        gluPerspective(45, (GLfloat) w / (GLfloat) h, 1, 1000);
+    }
+}
+
+void drawAxes(double size, GLfloat x, GLfloat y, GLfloat z) {
+    GLfloat color_r[] = {1.0, 0.0, 0.0, 1.0};
+    GLfloat color_g[] = {0.0, 1.0, 0.0, 1.0};
+    GLfloat color_b[] = {0.0, 0.0, 1.0, 1.0};
+
+    glPushAttrib(GL_ENABLE_BIT);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_TEXTURE_2D);
+
+    //x axis
+    glPushMatrix();
+    glColor3fv(color_r);
+    glScalef(size, size * 0.1, size * 0.1);
+    glTranslatef(0.5, 0, 0);  // put in one end
+    glutSolidCube(1.0);
+    glPopMatrix();
+
+    //y axis
+    glPushMatrix();
+    glColor3fv(color_g);
+    glRotatef(90, 0, 0, 1);
+    glScalef(size, size * 0.1, size * 0.1);
+    glTranslatef(0.5, 0, 0);  // put in one end
+    glutSolidCube(1.0);
+    glPopMatrix();
+
+    //z axis
+    glPushMatrix();
+    glColor3fv(color_b);
+    glRotatef(-90, 0, 1, 0);
+    glScalef(size, size * 0.1, size * 0.1);
+    glTranslatef(0.5, 0, 0);  // put in one end
+    glutSolidCube(1.0);
+    glPopMatrix();
+
+    glPopAttrib();
 }
 
 void display() {
-    glClearColor(arena.R, arena.G, arena.B, 0.0);
+    glClearColor(102.0 / 255.0, 153.0 / 255.0, 153.0 / 255.0, 0.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glClear(GL_COLOR_BUFFER_BIT);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    gluLookAt(400, 400, 400, 0, 0, 0, 0, 1, 0);
 
-    gameOver = p1.getScore() >= 10 || p2.getScore() >= 10;
+    drawAxes(50, 0, 0, 0);
 
     if (!gameOver) {
-        p1.draw();
-        p2.draw();
-
-        showScore(arena.x + 10, arena.y + 10);
+        mp1.draw();
     } else {
         showGameOver(arena.x + arena.width / 2, arena.y + arena.height / 2);
     }
@@ -252,7 +297,7 @@ void idle() {
     timeDifference = currentTime - previousTime;
     previousTime = currentTime;
 
-    if (!keyStatus[(int) (' ')]) {
+    if (!keyStatus[(int) (' ')] && false) {
         if (increasing) {
             punchTime += timeDifference;
         } else {
@@ -276,24 +321,23 @@ void idle() {
     } else {
         p2Mouse.state = 1;
     }
-    if (keyStatus[(int) ('w')]) {
-        p1.walk(timeDifference, p2, arena);
-        mouse.state = 1;
+    if(mp1.ready()) {
+        if (keyStatus[(int) ('w')]) {
+            mp1.walk(timeDifference);
+        }
+        if (keyStatus[(int) ('s')]) {
+            mp1.walk(-timeDifference);
+        }
+        if (keyStatus[(int) ('a')]) {
+            mp1.rotate(timeDifference);
+        }
+        if (keyStatus[(int) ('d')]) {
+            mp1.rotate(-timeDifference);
+        }
+        if (keyStatus[(int) ('q')]) {
+            mp1.startPunch();
+        }
     }
-    if (keyStatus[(int) ('s')]) {
-        p1.walk(-timeDifference, p2, arena);
-        mouse.state = 1;
-    }
-    if (keyStatus[(int) ('a')]) {
-        p1.rotate(timeDifference);
-    }
-    if (keyStatus[(int) ('d')]) {
-        p1.rotate(-timeDifference);
-    }
-
-    p1.treatPunch(timeDifference, mouse, arena, p2);
-    p2.treatPunch(timeDifference, p2Mouse, arena, p1);
-
     glutPostRedisplay();
 }
 
@@ -302,16 +346,17 @@ int main(int argc, char *argv[]) {
     initialize(argv[1]);
 
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 
     //Create window
-    glutInitWindowSize(Width, Height);
+    glutInitWindowSize(500, 500);
     glutInitWindowPosition(150, 50);
-    glutCreateWindow("T2");
+    glutCreateWindow("T3");
 
     init();
 
     glutDisplayFunc(display);
+    glutReshapeFunc(reshape);
     glutIdleFunc(idle);
 
     glutKeyboardFunc(keyPress);
