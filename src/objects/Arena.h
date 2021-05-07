@@ -6,6 +6,7 @@
 #define T2_ARENA_H
 
 #define ARENA_SCALE 2
+#define WALL_SIZE 140
 
 #include <GL/gl.h>
 #include <GL/glut.h>
@@ -18,6 +19,7 @@ public:
     GLfloat z{};
     GLfloat height{};
     GLfloat width{};
+    bool dWall = false;
 
     void initialize(GLfloat _x, GLfloat _y, GLfloat _z, GLfloat _height, GLfloat _width);
 
@@ -28,7 +30,7 @@ public:
 private:
     GLuint textureFloor{};
     GLuint textureWall{};
-    GLfloat textureSpace{};
+    GLuint textureSpace{};
     GLfloat materialAmbient[4] = {0.1, 0.1, 0.1, 1};
     GLfloat materialDiffuse[4] = {5, 5, 5, 1};
     GLfloat materialSpecular[4] = {5, 5, 5, 1};
@@ -36,7 +38,9 @@ private:
     GLfloat materialShininess[1] = {50.0};
     GLfloat color[4] = {1, 1, 1, 1};
 
-    void drawRectangle(GLuint texture, norm n, GLfloat w, GLfloat h, int divide);
+    void drawFloor(GLuint texture, norm n, GLfloat w, GLfloat h, int divide);
+
+    void drawWall(GLuint texture, GLfloat w, GLfloat h, int divide);
 
     void drawCube(GLuint texture, GLfloat size);
 };

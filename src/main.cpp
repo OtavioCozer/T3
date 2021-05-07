@@ -274,6 +274,9 @@ void keyPress(unsigned char key, int x, int y) {
         case 'l':
             drawLights = !drawLights;
             break;
+        case 'm':
+            arena.dWall = !arena.dWall;
+            break;
         case 'n':
         case 'N':
             nightMode = !nightMode;
