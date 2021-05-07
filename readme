@@ -1,3 +1,11 @@
-- Para parar o jogador inimigo aperte a tecla espaco
-- Aperte 'q' para socar
-- apos socar deve se esperar o fim da animacao
+Use o Makefile dentro da pasta src para compilar o projeto. Eh necessario que a pasta resources esteja no mesmo nivel
+que src
+Comandos:
+    - 'w', 'a', 's' e 'd' para se movimentar
+    - 'q' para socar. Deve-se esperar o fim da animaçao para poder andar ou socar novamente
+    - tecla ESPAÇO para ativar ou desativar o inimigo
+    - '1', '2' e '3' para alterar as cameras
+    - 'n' para alterar o modo de iluminaçao
+    - 't' para desativar ou ativar as texturas. Destivar a textura permite observar melhor a iluminaçao
+    - 'l' para mostrar a posiçao das luzes
+    - 'm' para ativar ou desativar os muros laterais
