@@ -16,7 +16,7 @@ add_executable(
         src/tinyxml/tinyxmlparser.cpp
         src/objects/Arena.cpp
         src/objects/Arena.h
-        src/services/Utils.cpp src/services/Utils.h src/input/Mouse.cpp src/input/Mouse.h src/model/Image.cpp src/model/Image.h src/model/AutoArray.cpp src/model/AutoArray.h src/model/Model.cpp src/model/Model.h src/objects/ModelPlayer.cpp src/objects/ModelPlayer.h src/objects/Camera.cpp src/objects/Camera.h)
+        src/services/Utils.cpp src/services/Utils.h src/input/Mouse.cpp src/input/Mouse.h src/model/Image.cpp src/model/Image.h src/model/AutoArray.cpp src/model/AutoArray.h src/model/Model.cpp src/model/Model.h src/objects/ModelPlayer.cpp src/objects/ModelPlayer.h src/objects/Camera.cpp src/objects/Camera.h src/objects/3Definitions.h)
 
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)

@@ -10,23 +10,7 @@
 #include <vector>
 #include <string>
 #include <cstring>
-
-typedef struct POS {
-    float x;
-    float y;
-    float z;
-} pos;
-
-typedef struct NORM {
-    float x;
-    float y;
-    float z;
-} norm;
-
-typedef struct TEX {
-    float u;
-    float v;
-} tex;
+#include "../objects/3Definitions.h"
 
 typedef struct VERTICE_STRIP {
     pos vPos;
@@ -69,7 +53,6 @@ public:
 
 private:
     bool loadMesh(const char *path, Frame &frame);  //Path é o caminho para o arquivo .obj e deve conter o nome do arquivo.obj
-    GLuint loadTexture(const char *filename);
 };
 
 

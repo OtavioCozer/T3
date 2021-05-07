@@ -5,7 +5,6 @@
 #ifndef T3_IMAGE_H
 #define T3_IMAGE_H
 
-
 #include <fstream>
 
 class Image {

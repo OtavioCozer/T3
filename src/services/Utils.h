@@ -23,7 +23,7 @@ public:
     static void rotate3(GLfloat &x, GLfloat &y, GLfloat &z, GLfloat xv, GLfloat yv, GLfloat zv, GLfloat deg);
 
     static void scale(GLfloat &x, GLfloat &y, GLfloat &z, GLfloat xf, GLfloat yf, GLfloat zf);
+
+    static GLuint loadTexture(const char *filename);
 };
-
-
 #endif //T2_UTILS_H

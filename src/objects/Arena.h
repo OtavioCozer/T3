@@ -9,6 +9,7 @@
 
 #include <GL/gl.h>
 #include <GL/glut.h>
+#include "3Definitions.h"
 
 class Arena {
 public:
@@ -19,18 +20,21 @@ public:
     GLfloat width;
     GLuint textureFloor;
     GLuint textureWall;
+    GLfloat materialAmbient[4] = {0.1, 0.1, 0.1, 1};
+    GLfloat materialDiffuse[4] = {5, 5, 5, 1};
+    GLfloat materialSpecular[4] = {5, 5, 5, 1};
+    GLfloat materialEmission[4] = {0.1, 0.1, 0.2, 1};
+    GLfloat materialShininess[1] = {50.0};
+    GLfloat color[4] = {1, 1, 1, 1};
+
 
     void initialize(GLfloat _x, GLfloat _y, GLfloat _z, GLfloat _height, GLfloat _width);
 
     void initializeTexture();
 
-    GLuint loadTexture(const char *filename);
-
     void draw();
 
-    void drawRectangle(GLuint texture, GLfloat xn, GLfloat yn, GLfloat zn);
-
-    getTexCoord(int j);
+    void drawRectangle(GLuint texture, norm n, GLfloat w, GLfloat h, int divide);
 };
 
 

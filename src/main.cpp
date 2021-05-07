@@ -1,7 +1,5 @@
 #include <cmath>
-#include <iostream>
 #include <cstdlib>
-#include "tinyxml/tinystr.h"
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <string>
@@ -13,8 +11,6 @@
 #include "objects/ModelPlayer.h"
 #include "objects/Camera.h"
 #include "services/Utils.h"
-
-#include <unistd.h>
 
 int keyStatus[256];
 
@@ -250,27 +246,6 @@ void changeCamera(int state) {
 
 void keyPress(unsigned char key, int x, int y) {
     switch (key) {
-        case 'y':
-            mp1.increasePropertieNumber();
-            break;
-        case 'h':
-            mp1.decreasePropertieNumber();
-            break;
-        case 'u':
-            mp1.increasePropertie();
-            break;
-        case 'j':
-            mp1.decreasePropertie();
-            break;
-        case 'i':
-            mp1.changeValue(+5);
-            break;
-        case 'k':
-            mp1.changeValue(-5);
-            break;
-        case 'r':
-            mp1.restartMaterial();
-            break;
         case 'a':
         case 'A':
             keyStatus[(int) ('a')] = 1;
@@ -299,27 +274,6 @@ void keyPress(unsigned char key, int x, int y) {
                 glDisable(GL_TEXTURE_2D);
             };
             break;
-        case '7':
-            camera.eyeX += 10;
-            break;
-        case '4':
-            camera.eyeX -= 10;
-            break;
-        case '8':
-            camera.eyeY += 10;
-            break;
-        case '5':
-            camera.eyeY -= 10;
-            break;
-        case '9':
-            camera.eyeZ += 10;
-            break;
-        case '6':
-            camera.eyeZ -= 10;
-            break;
-        case '0':
-            changeCamera(0);
-            break;
         case '1':
             changeCamera(1);
             break;
@@ -343,8 +297,8 @@ void keyPress(unsigned char key, int x, int y) {
         case 27:
             exit(0);
         case ' ':
-            mp1.printMaterial();
             keyStatus[(int) (' ')] = !keyStatus[(int) (' ')];
+            mp2.state = 0;
             break;
         default:
             break;
