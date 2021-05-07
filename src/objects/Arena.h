@@ -18,6 +18,14 @@ public:
     GLfloat z;
     GLfloat height;
     GLfloat width;
+
+    void initialize(GLfloat _x, GLfloat _y, GLfloat _z, GLfloat _height, GLfloat _width);
+
+    void initializeTexture();
+
+    void draw();
+
+private:
     GLuint textureFloor;
     GLuint textureWall;
     GLfloat materialAmbient[4] = {0.1, 0.1, 0.1, 1};
@@ -26,13 +34,6 @@ public:
     GLfloat materialEmission[4] = {0.1, 0.1, 0.2, 1};
     GLfloat materialShininess[1] = {50.0};
     GLfloat color[4] = {1, 1, 1, 1};
-
-
-    void initialize(GLfloat _x, GLfloat _y, GLfloat _z, GLfloat _height, GLfloat _width);
-
-    void initializeTexture();
-
-    void draw();
 
     void drawRectangle(GLuint texture, norm n, GLfloat w, GLfloat h, int divide);
 };

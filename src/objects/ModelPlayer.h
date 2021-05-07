@@ -24,11 +24,7 @@ public:
     GLfloat r;
     GLfloat angle;
     int state;
-    int walkFrame;
-    int punchFrame;
-    bool punchConfirm;
     int score;
-    bool p1;
 
     void initialize(Model &m, bool _p1, GLfloat a, GLfloat _x, GLfloat _y, GLfloat _z);
 
@@ -67,6 +63,12 @@ public:
     void checkPunch(ModelPlayer &player);
 
     void updateFrame();
+
+private:
+    int walkFrame;
+    int punchFrame;
+    bool punchConfirm;
+    bool p1;
 };
 
 

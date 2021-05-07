@@ -3,7 +3,6 @@
 //
 
 #include "Arena.h"
-#include "../model/Image.h"
 #include "../services/Utils.h"
 
 void Arena::initialize(GLfloat _x, GLfloat _y, GLfloat _z, GLfloat _height, GLfloat _width) {

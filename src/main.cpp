@@ -12,6 +12,14 @@
 #include "objects/Camera.h"
 #include "services/Utils.h"
 
+#define WIDTH 500
+#define HEIGHT_MAIN 500
+#define HEIGHT_ENEMY 250
+
+//#define WIDTH 1000
+//#define HEIGHT_MAIN 600
+//#define HEIGHT_ENEMY 300
+
 int keyStatus[256];
 
 Arena arena;
@@ -24,6 +32,7 @@ Model m;
 bool gameOver = false;
 bool nightMode = false;
 bool textureEnabled = true;
+bool drawLights = false;
 static char str[1000];
 
 void readXml(char *const fileName) {
@@ -202,27 +211,24 @@ void showGameOver(GLfloat x, GLfloat y) {
 }
 
 void changeCamera(int state) {
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
     if (state == 1) {
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        gluPerspective(45, (GLfloat) 500 / (GLfloat) 500, 15, 10000);
+        gluPerspective(45, (GLfloat) WIDTH / (GLfloat) HEIGHT_MAIN, 15, 10000);
 
         pos eye = mp1.getEyePos();
         pos target = mp1.getEyeTarget();
         camera.initialize(eye.x, eye.y, eye.z, target.x, target.y, target.z, 0, 1, 0, 1);
     } else if (state == 2) {
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        gluPerspective(45, (GLfloat) 500 / (GLfloat) 500, 3, 10000);
+        gluPerspective(45, (GLfloat) WIDTH / (GLfloat) HEIGHT_MAIN, 3, 10000);
 
         pos eye = mp1.getFistPos();
         pos target = mp1.getFistTarget();
         pos up = mp1.getFistUp();
         camera.initialize(eye.x, eye.y, eye.z, target.x, target.y, target.z, up.x, up.y, up.z, 2);
     } else if (state == 3) {
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        gluPerspective(45, (GLfloat) 500 / (GLfloat) 500, 1, 10000);
+        gluPerspective(45, (GLfloat) WIDTH / (GLfloat) HEIGHT_MAIN, 1, 10000);
 
         pos target = mp1.getPerspTarget();
         camera.state = 3;
@@ -267,6 +273,13 @@ void keyPress(unsigned char key, int x, int y) {
                 glDisable(GL_TEXTURE_2D);
             };
             break;
+        case 'l':
+            drawLights = !drawLights;
+            break;
+        case 'n':
+        case 'N':
+            nightMode = !nightMode;
+            break;
         case '1':
             changeCamera(1);
             break;
@@ -282,10 +295,6 @@ void keyPress(unsigned char key, int x, int y) {
             break;
         case '-':
             camera.r -= 10;
-            break;
-        case 'n':
-        case 'N':
-            nightMode = !nightMode;
             break;
         case 27:
             exit(0);
@@ -399,83 +408,87 @@ void drawAxes(double size, GLfloat x, GLfloat y, GLfloat z) {
 }
 
 void defineLight() {
+    glDisable(GL_LIGHT0);
+    glDisable(GL_LIGHT1);
+    glDisable(GL_LIGHT2);
+    GLfloat ambient[] = {0, 0, 0, 1};
+    GLfloat diffuse[] = {1, 1, 1, 1};
+    GLfloat specular[] = {1, 1, 1, 1};
+
     if (nightMode) {
-        GLfloat ambient[] = {0, 0, 0, 1};
-        GLfloat diffuse[] = {1, 1, 1, 1};
-        GLfloat specular[] = {1, 1, 1, 1};
         GLfloat cutoff[] = {35};
 
-        // ============= LIGHT 0
+// ------------------ LIGHT 1 ---------------------
         pos pos1 = mp1.getLightPos();
-        GLfloat light0_position[] = {pos1.x, pos1.y, pos1.z, 1};
         pos target1 = mp1.getLightTarget();
-        GLfloat light0_target[] = {target1.x - pos1.x, target1.y - pos1.y, target1.z - pos1.z};
-        glEnable(GL_LIGHT0);
-        glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
-        glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, light0_target);
-        glLightfv(GL_LIGHT0, GL_SPOT_CUTOFF, cutoff);
-        glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
-        glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
-        glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
-
-        // ============= LIGHT 1
-        pos pos2 = mp2.getLightPos();
-        GLfloat light1_position[] = {pos2.x, pos2.y, pos2.z, 1};
-        pos target2 = mp2.getLightTarget();
-        GLfloat light1_target[] = {target2.x - pos2.x, target2.y - pos2.y, target2.z - pos2.z};
+        GLfloat light1Position[] = {pos1.x, pos1.y, pos1.z, 1};
+        GLfloat light1Target[] = {target1.x - pos1.x, target1.y - pos1.y, target1.z - pos1.z};
         glEnable(GL_LIGHT1);
-        glLightfv(GL_LIGHT1, GL_POSITION, light1_position);
-        glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, light1_target);
+        glLightfv(GL_LIGHT1, GL_POSITION, light1Position);
+        glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, light1Target);
         glLightfv(GL_LIGHT1, GL_SPOT_CUTOFF, cutoff);
         glLightfv(GL_LIGHT1, GL_AMBIENT, ambient);
         glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuse);
         glLightfv(GL_LIGHT1, GL_SPECULAR, specular);
 
-        glDisable(GL_LIGHTING);
-        glPointSize(15);
-        glColor3f(1.0, 1.0, 0.0);
-        glBegin(GL_POINTS);
-        glVertex3f(light0_position[0], light0_position[1], light0_position[2]);
-        glVertex3f(light1_position[0], light1_position[1], light1_position[2]);
-        glEnd();
-        glEnable(GL_LIGHTING);
+// ------------------ LIGHT 2 ---------------------
+        pos pos2 = mp2.getLightPos();
+        pos target2 = mp2.getLightTarget();
+        GLfloat light2Position[] = {pos2.x, pos2.y, pos2.z, 1};
+        GLfloat light2Target[] = {target2.x - pos2.x, target2.y - pos2.y, target2.z - pos2.z};
+        glEnable(GL_LIGHT2);
+        glLightfv(GL_LIGHT2, GL_POSITION, light2Position);
+        glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, light2Target);
+        glLightfv(GL_LIGHT2, GL_SPOT_CUTOFF, cutoff);
+        glLightfv(GL_LIGHT2, GL_AMBIENT, ambient);
+        glLightfv(GL_LIGHT2, GL_DIFFUSE, diffuse);
+        glLightfv(GL_LIGHT2, GL_SPECULAR, specular);
+
+        if(drawLights) {
+            glDisable(GL_LIGHTING);
+            glPointSize(15);
+            glColor3f(1.0, 1.0, 0.0);
+            glBegin(GL_POINTS);
+            glVertex3f(light1Position[0], light1Position[1], light1Position[2]);
+            glVertex3f(light2Position[0], light2Position[1], light2Position[2]);
+            glEnd();
+            glEnable(GL_LIGHTING);
+        }
     } else {
-        glDisable(GL_LIGHT1);
-        glEnable(GL_LIGHT0);
-        GLfloat light_position[] = {arena.x + (arena.width / 2), 2 * 120, arena.z + (arena.height / 2), 1};
         GLfloat cutoff[] = {180};
-        GLfloat ambient[] = {0, 0, 0, 1};
-        GLfloat diffuse[] = {1, 1, 1, 1};
-        GLfloat specular[] = {1, 1, 1, 1};
-        glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
+// ------------------ LIGHT 0 ---------------------
+        GLfloat lightPosition[] = {arena.x + (arena.width / 2), 2 * 120, arena.z + (arena.height / 2), 1};
+        glEnable(GL_LIGHT0);
+        glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
         glLightfv(GL_LIGHT0, GL_SPOT_CUTOFF, cutoff);
         glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
         glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
         glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
 
-        glDisable(GL_LIGHTING);
-        glPointSize(15);
-        glColor3f(1.0, 1.0, 0.0);
-        glBegin(GL_POINTS);
-        glVertex3f(light_position[0], light_position[1], light_position[2]);
-        glEnd();
-        glEnable(GL_LIGHTING);
+        if(drawLights) {
+            glDisable(GL_LIGHTING);
+            glPointSize(15);
+            glColor3f(1.0, 1.0, 0.0);
+            glBegin(GL_POINTS);
+            glVertex3f(lightPosition[0], lightPosition[1], lightPosition[2]);
+            glEnd();
+            glEnable(GL_LIGHTING);
+        }
     }
 }
 
-void enemieDisplay() {
+void enemyDisplay() {
+    glViewport(0, HEIGHT_MAIN, WIDTH, HEIGHT_ENEMY);
+
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(45, (GLfloat) 500 / (GLfloat) 250, 15, 10000);
-
-    glViewport(0, 500, 500, 250);
-
+    gluPerspective(45, (GLfloat) WIDTH / (GLfloat) HEIGHT_ENEMY, 15, 10000);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
     pos eye = mp2.getEyePos();
     pos target = mp2.getEyeTarget();
-
     gluLookAt(eye.x, eye.y, eye.z, target.x, target.y, target.z, 0, 1, 0);
 
     defineLight();
@@ -489,7 +502,7 @@ void enemieDisplay() {
 
 void myDisplay() {
     changeCamera(camera.state);
-    glViewport(0, 0, 500, 500);
+    glViewport(0, 0, WIDTH, HEIGHT_MAIN);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -546,7 +559,7 @@ void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     myDisplay();
-    enemieDisplay();
+    enemyDisplay();
 
     glutSwapBuffers();
 }
@@ -608,8 +621,8 @@ int main(int argc, char *argv[]) {
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 
     //Create window
-    glutInitWindowSize(500, 750);
-    glutInitWindowPosition(1200, 300);
+    glutInitWindowSize(WIDTH, HEIGHT_MAIN + HEIGHT_ENEMY);
+    glutInitWindowPosition(1100, 100);
     glutCreateWindow("T3");
 
     if (argc < 2) {

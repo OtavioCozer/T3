@@ -3,7 +3,6 @@
 //
 
 #include "Model.h"
-#include "Image.h"
 #include "../services/Utils.h"
 
 
