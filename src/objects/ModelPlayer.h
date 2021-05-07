@@ -10,9 +10,7 @@
 #define MODEL_SCALE 100.0
 #define HAND_INDEX 22074
 #define EYE_INDEX 996
-#define FIST_INDEX_0 20998
-#define FIST_INDEX_1 20997
-#define FIST_INDEX_2 20996
+#define FIST_INDEX 20998
 
 #include "../model/Model.h"
 #include "../objects/Arena.h"
@@ -32,20 +30,7 @@ public:
     int score;
     bool p1;
 
-    int propertieNumber = 0;
-    void increasePropertieNumber();
-    void decreasePropertieNumber();
-
-    int propertie = 0;
-    void increasePropertie();
-    void decreasePropertie();
-    void changeValue(int value);
-
     void initialize(Model &m, bool _p1, GLfloat a, GLfloat _x, GLfloat _y, GLfloat _z);
-
-    void restartMaterial();
-
-    void printMaterial();
 
     void draw();
 
@@ -63,7 +48,7 @@ public:
 
     POS getPerspPos();
 
-    POS getPerspTarget();
+    POS getPerspTarget() const;
 
     POS getPerspUp();
 

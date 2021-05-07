@@ -22,7 +22,12 @@ void Arena::initializeTexture() {
 }
 
 void Arena::draw() {
+    glPushMatrix();
+    glTranslatef(x, y, z);
+
     drawRectangle(textureFloor, {0, 1, 0}, width, height, 100);
+
+    glPopMatrix();
 }
 
 void Arena::drawRectangle(GLuint texture, norm n, GLfloat w, GLfloat h, int divide) {

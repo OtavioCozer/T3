@@ -25,7 +25,6 @@ bool gameOver = false;
 bool nightMode = false;
 bool textureEnabled = true;
 static char str[1000];
-void *font = GLUT_BITMAP_9_BY_15;
 
 void readXml(char *const fileName) {
     TiXmlDocument doc(fileName);
@@ -203,13 +202,7 @@ void showGameOver(GLfloat x, GLfloat y) {
 }
 
 void changeCamera(int state) {
-    if (state == 0) {
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        gluPerspective(45, (GLfloat) 500 / (GLfloat) 500, 1, 10000);
-
-        camera.initialize(600, 600, 600, -600, -600, -600, 0, 1, 0, 0);
-    } else if (state == 1) {
+    if (state == 1) {
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
         gluPerspective(45, (GLfloat) 500 / (GLfloat) 500, 15, 10000);
@@ -425,15 +418,6 @@ void defineLight() {
         glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
         glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
 
-        glDisable(GL_LIGHTING);
-        glPointSize(15);
-        glColor3f(1.0, 1.0, 0.0);
-        glBegin(GL_POINTS);
-        glVertex3f(light0_position[0], light0_position[1], light0_position[2]);
-        glVertex3f(light0_target[0], light0_target[1], light0_target[2]);
-        glEnd();
-        glEnable(GL_LIGHTING);
-
         // ============= LIGHT 1
         pos pos2 = mp2.getLightPos();
         GLfloat light1_position[] = {pos2.x, pos2.y, pos2.z, 1};
@@ -451,12 +435,10 @@ void defineLight() {
         glPointSize(15);
         glColor3f(1.0, 1.0, 0.0);
         glBegin(GL_POINTS);
+        glVertex3f(light0_position[0], light0_position[1], light0_position[2]);
         glVertex3f(light1_position[0], light1_position[1], light1_position[2]);
-        glVertex3f(light1_target[0], light1_target[1], light1_target[2]);
         glEnd();
         glEnable(GL_LIGHTING);
-
-
     } else {
         glDisable(GL_LIGHT1);
         glEnable(GL_LIGHT0);
@@ -512,10 +494,7 @@ void myDisplay() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    if (camera.state == 0) {
-        gluLookAt(camera.eyeX, camera.eyeY, camera.eyeZ, camera.eyeX + camera.centerX, camera.eyeY + camera.centerY,
-                  camera.eyeZ + camera.centerZ, camera.upX, camera.upY, camera.upZ);
-    } else if (camera.state == 1) {
+    if (camera.state == 1) {
         pos eye = mp1.getEyePos();
         pos target = mp1.getEyeTarget();
         camera.initialize(eye.x, eye.y, eye.z, target.x, target.y, target.z, 0, 1, 0, 1);
@@ -633,6 +612,10 @@ int main(int argc, char *argv[]) {
     glutInitWindowPosition(1200, 300);
     glutCreateWindow("T3");
 
+    if(argc < 2) {
+        printf("MISSING ARENA FILE\n");
+        return 0;
+    }
     init(argv[1]);
 
     glutDisplayFunc(display);

@@ -31,46 +31,6 @@ void ModelPlayer::initialize(Model &m, bool _p1, GLfloat a, GLfloat _x, GLfloat 
     }
 }
 
-void ModelPlayer::restartMaterial() {
-    if (p1) {
-        model.material.materialAmbient[1] = 0;
-        model.material.materialDiffuse[1] = 0;
-        model.material.materialSpecular[1] = 0;
-        model.material.materialEmission[1] = 0;
-        model.material.color[1] = 0;
-    } else {
-        model.material.materialAmbient[0] = 0;
-        model.material.materialDiffuse[0] = 0;
-        model.material.materialEmission[0] = 0;
-        model.material.materialSpecular[0] = 0;
-        model.material.color[0] = 0;
-    }
-}
-
-void ModelPlayer::printMaterial() {
-    if (p1) {
-        printf("mp1\n");
-    }
-    printf("materialAmbient = {%lf, %lf, %lf, %lf}\n", model.material.materialAmbient[0],
-           model.material.materialAmbient[1], model.material.materialAmbient[2], model.material.materialAmbient[3]
-    );
-
-    printf("materialDiffuse = {%lf, %lf, %lf, %lf}\n", model.material.materialDiffuse[0],
-           model.material.materialDiffuse[1], model.material.materialDiffuse[2], model.material.materialDiffuse[3]
-    );
-
-    printf("materialSpecular = {%lf, %lf, %lf, %lf}\n", model.material.materialSpecular[0],
-           model.material.materialSpecular[1], model.material.materialSpecular[2], model.material.materialSpecular[3]
-    );
-
-    printf("materialEmission = {%lf, %lf, %lf, %lf}\n", model.material.materialEmission[0],
-           model.material.materialEmission[1], model.material.materialEmission[2], model.material.materialEmission[3]
-    );
-
-    printf("materialShininess = {%lf}\n", model.material.materialEmission[0]);
-}
-
-
 void ModelPlayer::draw() {
     glPushMatrix();
     glTranslatef(x, y, z);
@@ -172,7 +132,7 @@ POS ModelPlayer::getPerspPos() {
     return persp;
 }
 
-POS ModelPlayer::getPerspTarget() {
+POS ModelPlayer::getPerspTarget() const {
     GLfloat xTarget = 0;
     GLfloat yTarget = 1;
     GLfloat zTarget = 0;
@@ -186,9 +146,9 @@ POS ModelPlayer::getPerspTarget() {
 }
 
 POS ModelPlayer::getPerspUp() {
-    GLfloat xUp = model.punch[punchFrame].vertsNorm[FIST_INDEX_0].x;
-    GLfloat yUp = model.punch[punchFrame].vertsNorm[FIST_INDEX_0].y;
-    GLfloat zUp = model.punch[punchFrame].vertsNorm[FIST_INDEX_0].z;
+    GLfloat xUp = model.punch[punchFrame].vertsNorm[FIST_INDEX].x;
+    GLfloat yUp = model.punch[punchFrame].vertsNorm[FIST_INDEX].y;
+    GLfloat zUp = model.punch[punchFrame].vertsNorm[FIST_INDEX].z;
 
     Utils::scale(xUp, yUp, zUp, MODEL_SCALE, MODEL_SCALE, MODEL_SCALE);
     Utils::rotate3(xUp, yUp, zUp, 0, 1, 0, angle);
@@ -199,9 +159,9 @@ POS ModelPlayer::getPerspUp() {
 }
 
 POS ModelPlayer::getFistPos() {
-    GLfloat xFist = model.punch[punchFrame].vertsPos[FIST_INDEX_0].x;
-    GLfloat yFist = model.punch[punchFrame].vertsPos[FIST_INDEX_0].y;
-    GLfloat zFist = model.punch[punchFrame].vertsPos[FIST_INDEX_0].z;
+    GLfloat xFist = model.punch[punchFrame].vertsPos[FIST_INDEX].x;
+    GLfloat yFist = model.punch[punchFrame].vertsPos[FIST_INDEX].y;
+    GLfloat zFist = model.punch[punchFrame].vertsPos[FIST_INDEX].z;
 
     Utils::scale(xFist, yFist, zFist, MODEL_SCALE, MODEL_SCALE, MODEL_SCALE);
     Utils::rotate3(xFist, yFist, zFist, 0, 1, 0, angle);
@@ -212,9 +172,9 @@ POS ModelPlayer::getFistPos() {
 }
 
 POS ModelPlayer::getFistTarget() {
-    GLfloat xTarget = model.punch[punchFrame].vertsPos[FIST_INDEX_0].x;
-    GLfloat yTarget = model.punch[punchFrame].vertsPos[FIST_INDEX_0].y;
-    GLfloat zTarget = model.punch[punchFrame].vertsPos[FIST_INDEX_0].z + 0.2;
+    GLfloat xTarget = model.punch[punchFrame].vertsPos[FIST_INDEX].x;
+    GLfloat yTarget = model.punch[punchFrame].vertsPos[FIST_INDEX].y;
+    GLfloat zTarget = model.punch[punchFrame].vertsPos[FIST_INDEX].z + 0.2;
 
     Utils::scale(xTarget, yTarget, zTarget, MODEL_SCALE, MODEL_SCALE, MODEL_SCALE);
     Utils::rotate3(xTarget, yTarget, zTarget, 0, 1, 0, angle);
@@ -226,9 +186,9 @@ POS ModelPlayer::getFistTarget() {
 
 
 POS ModelPlayer::getFistUp() {
-    GLfloat xUp = model.punch[punchFrame].vertsNorm[FIST_INDEX_0].x;
-    GLfloat yUp = model.punch[punchFrame].vertsNorm[FIST_INDEX_0].y;
-    GLfloat zUp = model.punch[punchFrame].vertsNorm[FIST_INDEX_0].z;
+    GLfloat xUp = model.punch[punchFrame].vertsNorm[FIST_INDEX].x;
+    GLfloat yUp = model.punch[punchFrame].vertsNorm[FIST_INDEX].y;
+    GLfloat zUp = model.punch[punchFrame].vertsNorm[FIST_INDEX].z;
 
     Utils::scale(xUp, yUp, zUp, MODEL_SCALE, MODEL_SCALE, MODEL_SCALE);
     Utils::rotate3(xUp, yUp, zUp, 0, 1, 0, angle);
@@ -307,60 +267,3 @@ void ModelPlayer::updateFrame() {
         punchFrame = punchFrame % 43;
     }
 }
-
-void ModelPlayer::increasePropertieNumber() {
-    propertieNumber++;
-    printf("propertie number %d\n", propertieNumber);
-}
-
-void ModelPlayer::decreasePropertieNumber() {
-    propertieNumber--;
-    printf("propertie number %d\n", propertieNumber);
-}
-
-void ModelPlayer::increasePropertie() {
-    propertie++;
-    if (propertie == 0) {
-        printf("materialAmbient = {%lf, %lf, %lf, %lf}\n", model.material.materialAmbient[0],
-               model.material.materialAmbient[1], model.material.materialAmbient[2], model.material.materialAmbient[3]
-        );
-
-    } else if (propertie == 1) {
-        printf("materialDiffuse = {%lf, %lf, %lf, %lf}\n", model.material.materialDiffuse[0],
-               model.material.materialDiffuse[1], model.material.materialDiffuse[2], model.material.materialDiffuse[3]
-        );
-
-    } else if (propertie == 2) {
-        printf("materialSpecular = {%lf, %lf, %lf, %lf}\n", model.material.materialSpecular[0],
-               model.material.materialSpecular[1], model.material.materialSpecular[2],
-               model.material.materialSpecular[3]
-        );
-    } else if (propertie == 3) {
-        printf("materialEmission = {%lf, %lf, %lf, %lf}\n", model.material.materialEmission[0],
-               model.material.materialEmission[1], model.material.materialEmission[2],
-               model.material.materialEmission[3]
-        );
-    } else if (propertie == 4) {
-        printf("materialShininess = {%lf}\n", model.material.materialEmission[0]);
-    }
-}
-
-void ModelPlayer::decreasePropertie() {
-    propertie--;
-}
-
-void ModelPlayer::changeValue(int value) {
-    if (propertie == 0) {
-        model.material.materialAmbient[propertieNumber] += value;
-    } else if (propertie == 1) {
-        model.material.materialDiffuse[propertieNumber] += value;
-    } else if (propertie == 2) {
-        model.material.materialSpecular[propertieNumber] += value;
-    } else if (propertie == 3) {
-        model.material.materialEmission[propertieNumber] += value;
-    } else if (propertie == 4) {
-        model.material.materialEmission[propertieNumber] += value;
-    }
-}
-
-
