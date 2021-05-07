@@ -23,7 +23,7 @@ public:
 
     char &operator*() const;
 
-    AutoArray& operator=(const AutoArray &aarray);
+    AutoArray &operator=(const AutoArray &aarray);
 
     char *operator->() const;
 

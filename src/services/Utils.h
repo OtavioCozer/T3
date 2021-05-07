@@ -26,4 +26,5 @@ public:
 
     static GLuint loadTexture(const char *filename);
 };
+
 #endif //T2_UTILS_H

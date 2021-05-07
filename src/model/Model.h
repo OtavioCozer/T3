@@ -49,10 +49,12 @@ public:
     Material material;
 
     void initialize();
+
     void draw(Frame &frame);
 
 private:
-    bool loadMesh(const char *path, Frame &frame);  //Path é o caminho para o arquivo .obj e deve conter o nome do arquivo.obj
+    //Path é o caminho para o arquivo .obj e deve conter o nome do arquivo.obj
+    bool loadMesh(const char *path, Frame &frame);
 };
 
 

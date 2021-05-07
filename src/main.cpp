@@ -612,7 +612,7 @@ int main(int argc, char *argv[]) {
     glutInitWindowPosition(1200, 300);
     glutCreateWindow("T3");
 
-    if(argc < 2) {
+    if (argc < 2) {
         printf("MISSING ARENA FILE\n");
         return 0;
     }

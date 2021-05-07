@@ -69,7 +69,7 @@ void Model::initialize() {
     loadMesh("../resources/walking/walking_000025.obj", aux);
     fwalk.push_back(aux);
 
-    for(int i = (int)fwalk.size() - 1; i >= 0; i--) {
+    for (int i = (int) fwalk.size() - 1; i >= 0; i--) {
         bwalk.push_back(fwalk[i]);
     }
 

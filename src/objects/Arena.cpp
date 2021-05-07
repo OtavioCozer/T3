@@ -43,7 +43,7 @@ void Arena::drawRectangle(GLuint texture, norm n, GLfloat w, GLfloat h, int divi
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);  //Y
 
     glBindTexture(GL_TEXTURE_2D, texture);
-    double textureS = (double)  3 / divide;  // Bigger than 1, repeat
+    double textureS = (double) 3 / divide;  // Bigger than 1, repeat
     GLfloat wp = width / (GLfloat) divide;
     GLfloat hp = width / (GLfloat) divide;
 

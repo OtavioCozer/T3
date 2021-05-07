@@ -24,8 +24,8 @@ char &AutoArray::operator*() const {
     return *array;
 }
 
-AutoArray& AutoArray::operator=(const AutoArray &aarray) {
-    if(&aarray != this) {
+AutoArray &AutoArray::operator=(const AutoArray &aarray) {
+    if (&aarray != this) {
         if (!isReleased && array != nullptr) {
             delete[] array;
         }

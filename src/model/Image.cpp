@@ -76,30 +76,31 @@ Image *Image::loadImage(const char *filename) {
     }
 
     input.close();
-    return new Image(pixels2.release(), width_, height_);}
+    return new Image(pixels2.release(), width_, height_);
+}
 
-int Image::toInt(const char* bytes) {
-    return (int)(((unsigned char)bytes[3] << 24) |
-                 ((unsigned char)bytes[2] << 16) |
-                 ((unsigned char)bytes[1] << 8) |
-                 (unsigned char)bytes[0]);
+int Image::toInt(const char *bytes) {
+    return (int) (((unsigned char) bytes[3] << 24) |
+                  ((unsigned char) bytes[2] << 16) |
+                  ((unsigned char) bytes[1] << 8) |
+                  (unsigned char) bytes[0]);
 }
 
 //Converts a two-character array to a short, using little-endian form
-short Image::toShort(const char* bytes) {
-    return (short)(((unsigned char)bytes[1] << 8) |
-                   (unsigned char)bytes[0]);
+short Image::toShort(const char *bytes) {
+    return (short) (((unsigned char) bytes[1] << 8) |
+                    (unsigned char) bytes[0]);
 }
 
 //Reads the next four bytes as an integer, using little-endian form
-int Image::readInt(std::ifstream& input) {
+int Image::readInt(std::ifstream &input) {
     char buffer[4];
     input.read(buffer, 4);
     return toInt(buffer);
 }
 
 //Reads the next two bytes as a short, using little-endian form
-short Image::readShort(std::ifstream& input) {
+short Image::readShort(std::ifstream &input) {
     char buffer[2];
     input.read(buffer, 2);
     return toShort(buffer);
