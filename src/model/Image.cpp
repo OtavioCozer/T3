@@ -26,8 +26,8 @@ Image *Image::loadImage(const char *filename) {
 
     //Read the header
     int headerSize = readInt(input);
-    int width_;
-    int height_;
+    int width_ = 0;
+    int height_ = 0;
     switch (headerSize) {
         case 40:
             //V3

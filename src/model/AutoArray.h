@@ -29,8 +29,6 @@ public:
 
     char *release();
 
-    void reset(char *array_);
-
     char *operator+(int i);
 
     char &operator[](int i);

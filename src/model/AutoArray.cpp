@@ -46,13 +46,6 @@ char *AutoArray::release() {
     return array;
 }
 
-void AutoArray::reset(char *array_ = nullptr) {
-    if (!isReleased && array != nullptr) {
-        delete[] array;
-    }
-    array = array_;
-}
-
 char *AutoArray::operator+(int i) {
     return array + i;
 }

@@ -18,13 +18,13 @@
 class ModelPlayer {
 public:
     Model model;
-    GLfloat x;
-    GLfloat y;
-    GLfloat z;
-    GLfloat r;
-    GLfloat angle;
-    int state;
-    int score;
+    GLfloat x{};
+    GLfloat y{};
+    GLfloat z{};
+    GLfloat r{};
+    GLfloat angle{};
+    int state{};
+    int score{};
 
     void initialize(Model &m, bool _p1, GLfloat a, GLfloat _x, GLfloat _y, GLfloat _z);
 
@@ -38,15 +38,11 @@ public:
 
     void startPunch();
 
-    POS getLightPos();
+    POS getLightPos() const;
 
-    POS getLightTarget();
-
-    POS getPerspPos();
+    POS getLightTarget() const;
 
     POS getPerspTarget() const;
-
-    POS getPerspUp();
 
     POS getFistPos();
 
@@ -65,10 +61,10 @@ public:
     void updateFrame();
 
 private:
-    int walkFrame;
-    int punchFrame;
-    bool punchConfirm;
-    bool p1;
+    int walkFrame{};
+    int punchFrame{};
+    bool punchConfirm{};
+    bool p1{};
 };
 
 

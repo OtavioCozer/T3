@@ -6,20 +6,20 @@
 #define T3_3DEFINITIONS_H
 
 typedef struct POS {
-    float x;
-    float y;
-    float z;
+    GLfloat x;
+    GLfloat y;
+    GLfloat z;
 } pos;
 
 typedef struct NORM {
-    float x;
-    float y;
-    float z;
+    GLfloat x;
+    GLfloat y;
+    GLfloat z;
 } norm;
 
 typedef struct TEX {
-    float u;
-    float v;
+    GLfloat u;
+    GLfloat v;
 } tex;
 
 #endif //T3_3DEFINITIONS_H

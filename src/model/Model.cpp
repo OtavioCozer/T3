@@ -163,16 +163,16 @@ void Model::initialize() {
 
 void Model::draw(Frame &frame) {
     bool first = true;
+
     glMaterialfv(GL_FRONT, GL_AMBIENT, material.materialAmbient);
     glMaterialfv(GL_FRONT, GL_DIFFUSE, material.materialDiffuse);
     glMaterialfv(GL_FRONT, GL_SPECULAR, material.materialSpecular);
     glMaterialfv(GL_FRONT, GL_EMISSION, material.materialEmission);
     glMaterialfv(GL_FRONT, GL_SHININESS, material.materialShininess);
 
-    glBindTexture(GL_TEXTURE_2D, material.texture0);
     glColor3f(material.color[0], material.color[1], material.color[2]);
 
-
+    glBindTexture(GL_TEXTURE_2D, material.texture0);
     for (unsigned int i = 0; i < frame.vertsS.size(); i = i + 3) {
         glBegin(GL_TRIANGLE_STRIP);
         for (unsigned int j = i; j < i + 3; j++) {
@@ -195,7 +195,6 @@ bool Model::loadMesh(const char *path, Frame &frame) {
     frame.vertsNorm.clear();
     frame.vertsTex.clear();
     frame.vertsS.clear();
-    int i = 0;
     FILE *file = fopen(path, "r");
     if (file == nullptr) {
         printf("falha ao carregar o arquivo\n");

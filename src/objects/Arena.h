@@ -13,11 +13,11 @@
 
 class Arena {
 public:
-    GLfloat x;
-    GLfloat y;
-    GLfloat z;
-    GLfloat height;
-    GLfloat width;
+    GLfloat x{};
+    GLfloat y{};
+    GLfloat z{};
+    GLfloat height{};
+    GLfloat width{};
 
     void initialize(GLfloat _x, GLfloat _y, GLfloat _z, GLfloat _height, GLfloat _width);
 
@@ -26,8 +26,8 @@ public:
     void draw();
 
 private:
-    GLuint textureFloor;
-    GLuint textureWall;
+    GLuint textureFloor{};
+    GLuint textureWall{};
     GLfloat materialAmbient[4] = {0.1, 0.1, 0.1, 1};
     GLfloat materialDiffuse[4] = {5, 5, 5, 1};
     GLfloat materialSpecular[4] = {5, 5, 5, 1};

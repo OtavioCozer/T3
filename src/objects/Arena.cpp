@@ -42,28 +42,28 @@ void Arena::drawRectangle(GLuint texture, norm n, GLfloat w, GLfloat h, int divi
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);  //Y
 
     glBindTexture(GL_TEXTURE_2D, texture);
-    double textureS = (double) 3 / divide;  // Bigger than 1, repeat
-    GLfloat wp = width / (GLfloat) divide;
-    GLfloat hp = width / (GLfloat) divide;
+    GLfloat textureS = (GLfloat) 3 / divide;  // Bigger than 1, repeat
+    GLfloat wp = w / (GLfloat) divide;
+    GLfloat hp = h / (GLfloat) divide;
 
     for (int i = 0; i < divide; i++) {
         for (int j = 0; j < divide; j++) {
             glBegin(GL_QUADS);
 
             glNormal3f(n.x, n.y, n.z);
-            glTexCoord2f(j * textureS, i * textureS);
+            glTexCoord2f((GLfloat)j * textureS, (GLfloat)i * textureS);
             glVertex3f((GLfloat) j * wp, 0, (GLfloat) i * hp);
 
             glNormal3f(n.x, n.y, n.z);
-            glTexCoord2f(j * textureS, (i + 1) * textureS);
+            glTexCoord2f((GLfloat)j * textureS, (GLfloat)(i + 1) * textureS);
             glVertex3f((GLfloat) j * wp, 0, (GLfloat) (i + 1) * hp);
 
             glNormal3f(n.x, n.y, n.z);
-            glTexCoord2f((j + 1) * textureS, (i + 1) * textureS);
+            glTexCoord2f((GLfloat)(j + 1) * textureS, (GLfloat)(i + 1) * textureS);
             glVertex3f((GLfloat) (j + 1) * wp, 0, (GLfloat) (i + 1) * hp);
 
             glNormal3f(n.x, n.y, n.z);
-            glTexCoord2f((j + 1) * textureS, i * textureS);
+            glTexCoord2f((GLfloat)(j + 1) * textureS, (GLfloat)i * textureS);
             glVertex3f((GLfloat) (j + 1) * wp, 0, (GLfloat) i * hp);
 
             glEnd();

@@ -24,7 +24,7 @@ public:
     std::vector<norm> vertsNorm;       //Lista de normais dos vertices (original do OBJ)
     std::vector<tex> vertsTex;         //Lista de coor de textura dos vertices (original do OBJ)
     std::vector<verticeStrip> vertsS;  //Lista ordenada de vertices das faces para o desenho do modelo via trangle strip
-    int changeTexture;
+    unsigned long changeTexture;
 };
 
 class Material {

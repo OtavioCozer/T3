@@ -93,7 +93,7 @@ void ModelPlayer::startPunch() {
     state = 3;
 }
 
-POS ModelPlayer::getLightPos() {
+POS ModelPlayer::getLightPos() const {
     GLfloat xTarget = 0;
     GLfloat yTarget = 2.8;
     GLfloat zTarget = 0;
@@ -106,7 +106,7 @@ POS ModelPlayer::getLightPos() {
     return target;
 }
 
-POS ModelPlayer::getLightTarget() {
+POS ModelPlayer::getLightTarget() const {
     GLfloat xTarget = 0;
     GLfloat yTarget = 0;
     GLfloat zTarget = 0;
@@ -117,19 +117,6 @@ POS ModelPlayer::getLightTarget() {
 
     pos target = {xTarget, yTarget, zTarget};
     return target;
-}
-
-POS ModelPlayer::getPerspPos() {
-    GLfloat xPersp = 0;
-    GLfloat yPersp = 1.8;
-    GLfloat zPersp = -1.5;
-
-    Utils::scale(xPersp, yPersp, zPersp, MODEL_SCALE, MODEL_SCALE, MODEL_SCALE);
-    Utils::rotate3(xPersp, yPersp, zPersp, 0, 1, 0, angle);
-    Utils::translate3(xPersp, yPersp, zPersp, x, y, z);
-
-    pos persp = {xPersp, yPersp, zPersp};
-    return persp;
 }
 
 POS ModelPlayer::getPerspTarget() const {
@@ -143,19 +130,6 @@ POS ModelPlayer::getPerspTarget() const {
 
     pos target = {xTarget, yTarget, zTarget};
     return target;
-}
-
-POS ModelPlayer::getPerspUp() {
-    GLfloat xUp = model.punch[punchFrame].vertsNorm[FIST_INDEX].x;
-    GLfloat yUp = model.punch[punchFrame].vertsNorm[FIST_INDEX].y;
-    GLfloat zUp = model.punch[punchFrame].vertsNorm[FIST_INDEX].z;
-
-    Utils::scale(xUp, yUp, zUp, MODEL_SCALE, MODEL_SCALE, MODEL_SCALE);
-    Utils::rotate3(xUp, yUp, zUp, 0, 1, 0, angle);
-    Utils::translate3(xUp, yUp, zUp, x, y, z);
-
-    pos up = {0, 1, 0};
-    return up;
 }
 
 POS ModelPlayer::getFistPos() {
@@ -256,10 +230,7 @@ void ModelPlayer::updateFrame() {
     if (state == 0) {
         walkFrame = 0;
         punchFrame = 0;
-    } else if (state == 1) {
-        walkFrame++;
-        walkFrame = walkFrame % 24;
-    } else if (state == 2) {
+    } else if (state == 1 || state == 2) {
         walkFrame++;
         walkFrame = walkFrame % 24;
     } else if (state == 3) {

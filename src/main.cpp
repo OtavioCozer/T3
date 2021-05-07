@@ -167,9 +167,7 @@ void drawHud() {
     sprintf(str, "Jogador: %d Computador: %d", mp1.score, mp2.score);
     drawChars(0.3, 0.95, 0, str, 1, 0, 0);
 
-    if (camera.state == 0) {
-        sprintf(str, "Camera 0");
-    } else if (camera.state == 1) {
+    if (camera.state == 1) {
         sprintf(str, "Camera 1");
     } else if (camera.state == 2) {
         sprintf(str, "Camera 2");
@@ -271,7 +269,7 @@ void keyPress(unsigned char key, int x, int y) {
                 glEnable(GL_TEXTURE_2D);
             } else {
                 glDisable(GL_TEXTURE_2D);
-            };
+            }
             break;
         case 'l':
             drawLights = !drawLights;
