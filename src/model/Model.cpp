@@ -7,13 +7,15 @@
 
 
 void Model::initialize() {
-    material.texture1 = loadTexture("../resources/Ch44_1001_Diffuse.bmp");
+    printf("loading model texture\n");
     material.texture0 = loadTexture("../resources/Ch44_1002_Diffuse.bmp");
+    material.texture1 = loadTexture("../resources/Ch44_1001_Diffuse.bmp");
 
     loadMesh("../resources/idle.obj", idle);
 
     Frame aux;
 
+    printf("loading model mesh\n");
     loadMesh("../resources/walking/walking_000001.obj", aux);
     fwalk.push_back(aux);
     loadMesh("../resources/walking/walking_000002.obj", aux);
@@ -155,23 +157,21 @@ void Model::initialize() {
     punch.push_back(aux);
     loadMesh("../resources/punching/punching_000043.obj", aux);
     punch.push_back(aux);
-
 }
 
 
 void Model::draw(Frame &frame) {
     bool first = true;
-    glMaterialfv(GL_FRONT, GL_EMISSION, material.materialEmission);
     glMaterialfv(GL_FRONT, GL_AMBIENT, material.materialAmbient);
     glMaterialfv(GL_FRONT, GL_DIFFUSE, material.materialDiffuse);
     glMaterialfv(GL_FRONT, GL_SPECULAR, material.materialSpecular);
+    glMaterialfv(GL_FRONT, GL_EMISSION, material.materialEmission);
     glMaterialfv(GL_FRONT, GL_SHININESS, material.materialShininess);
 
     glBindTexture(GL_TEXTURE_2D, material.texture0);
-    glColor3f(1, 0.2, 0.2);
+    glColor3f(material.color[0], material.color[1], material.color[2]);
 
-    glPushMatrix();
-    glScalef(100.0, 100.0, 100.0);
+
     for (unsigned int i = 0; i < frame.vertsS.size(); i = i + 3) {
         glBegin(GL_TRIANGLE_STRIP);
         for (unsigned int j = i; j < i + 3; j++) {
@@ -186,7 +186,6 @@ void Model::draw(Frame &frame) {
             glBindTexture(GL_TEXTURE_2D, material.texture1);
         }
     }
-    glPopMatrix();
 }
 
 bool Model::loadMesh(const char *path, Frame &frame) {
@@ -271,7 +270,7 @@ GLuint Model::loadTexture(const char *filename) {
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-    //    glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,GL_REPLACE );
+//        glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,GL_REPLACE );
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexImage2D(GL_TEXTURE_2D,                //Always GL_TEXTURE_2D

@@ -17,20 +17,38 @@ double Utils::distance(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2) {
     return sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
 }
 
-double Utils::magnitude(GLfloat x, GLfloat y) {
-    return sqrt(pow(x, 2) + pow(y, 2));
-}
-
-void Utils::translate(GLfloat &x, GLfloat &y, GLfloat tx, GLfloat ty) {
+void Utils::translate3(GLfloat &x, GLfloat &y, GLfloat &z, GLfloat tx, GLfloat ty, GLfloat tz) {
     x += tx;
     y += ty;
+    z += tz;
 }
 
-void Utils::rotate(GLfloat &x, GLfloat &y, GLfloat deg) {
+void Utils::rotate3(GLfloat &x, GLfloat &y, GLfloat &z, GLfloat xv, GLfloat yv, GLfloat zv, GLfloat deg) {
     double rad = degToRad(deg);
-    GLfloat tempox = x;
-    GLfloat tempoy = y;
+    GLfloat tmpx = x;
+    GLfloat tmpy = y;
+    GLfloat tmpz = z;
 
-    x = tempox * cos(rad) - tempoy * sin(rad);
-    y = tempox * sin(rad) + tempoy * cos(rad);
+    if (xv == 1 && yv == 0 && zv == 0) {
+        x = tmpx * 1 + tmpy * 0 + tmpz * 0;
+        y = tmpx * 0 + tmpy * cos(rad) - tmpz * sin(rad);
+        z = tmpx * 0 + tmpy * sin(rad) + tmpz * cos(rad);
+    } else if (xv == 0 && yv == 1 && zv == 0) {
+        x = tmpx * cos(rad) + tmpy * 0 + tmpz * sin(rad);
+        y = tmpx * 0 + tmpy * 1 + tmpz * 0;
+        z = -tmpx * sin(rad) + tmpy * 0 + tmpz * cos(rad);
+    } else if (xv == 0 && yv == 0 && zv == 1) {
+        x = tmpx * cos(rad) - tmpy * sin(rad) + tmpz * 0;
+        y = tmpx * sin(rad) + tmpy * cos(rad) + tmpz * 0;
+        z = tmpx * 0 + tmpy * 0 + tmpz * 1;
+    } else {
+        perror("ROTATION NOT ALLOWED\n");
+        exit(EXIT_FAILURE);
+    }
+}
+
+void Utils::scale(GLfloat &x, GLfloat &y, GLfloat &z, GLfloat xf, GLfloat yf, GLfloat zf) {
+    x *= xf;
+    y *= yf;
+    z *= zf;
 }

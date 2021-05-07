@@ -18,11 +18,11 @@ public:
 
     static double distance(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2);
 
-    static double magnitude(GLfloat x, GLfloat y);
+    static void translate3(GLfloat &y, GLfloat &x, GLfloat &z, GLfloat tx, GLfloat ty, GLfloat tz);
 
-    static void translate(GLfloat &x, GLfloat &y, GLfloat tx, GLfloat ty);
+    static void rotate3(GLfloat &x, GLfloat &y, GLfloat &z, GLfloat xv, GLfloat yv, GLfloat zv, GLfloat deg);
 
-    static void rotate(GLfloat &x, GLfloat &y, GLfloat deg);
+    static void scale(GLfloat &x, GLfloat &y, GLfloat &z, GLfloat xf, GLfloat yf, GLfloat zf);
 };
 
 

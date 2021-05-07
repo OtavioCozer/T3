@@ -45,11 +45,13 @@ public:
 
 class Material {
 public:
-    GLfloat materialAmbient[4] = {0.5, 0.5, 0.5, 1.0};
-    GLfloat materialDiffuse[4] = {1.0, 1.0, 1.0, 1.0};
-    GLfloat materialSpecular[4] = {1.0, 1.0, 1.0, 1.0};
-    GLfloat materialEmission[4] = {0.5, 0.5, 0.5, 1.0};
-    GLfloat materialShininess[1] = {180.0};
+    GLfloat materialAmbient[4] = {0, 0, 0, 1};
+    GLfloat materialDiffuse[4] = {0, 0, 0, 1};
+    GLfloat materialSpecular[4] = {0, 0, 0, 1};
+    GLfloat materialEmission[4] = {0, 0, 0, 1};
+    GLfloat materialShininess[1] = {30};
+    GLfloat color[4] = {0, 0, 0, 1};
+
     GLuint texture0{};
     GLuint texture1{};
 };

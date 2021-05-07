@@ -5,20 +5,32 @@
 #ifndef T2_ARENA_H
 #define T2_ARENA_H
 
+#define ARENA_SCALE 2
 
-#include "../polygons/Rectangle.h"
+#include <GL/gl.h>
+#include <GL/glut.h>
 
 class Arena {
 public:
     GLfloat x;
     GLfloat y;
+    GLfloat z;
     GLfloat height;
     GLfloat width;
-    GLfloat R;
-    GLfloat G;
-    GLfloat B;
+    GLuint textureFloor;
+    GLuint textureWall;
 
-    void initializeArena(GLfloat _x, GLfloat _y, GLfloat _height, GLfloat _width, const std::string &color);
+    void initialize(GLfloat _x, GLfloat _y, GLfloat _z, GLfloat _height, GLfloat _width);
+
+    void initializeTexture();
+
+    GLuint loadTexture(const char *filename);
+
+    void draw();
+
+    void drawRectangle(GLuint texture, GLfloat xn, GLfloat yn, GLfloat zn);
+
+    getTexCoord(int j);
 };
 
 

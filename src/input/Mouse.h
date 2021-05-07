@@ -10,16 +10,9 @@
 
 class Mouse {
 public:
-    GLfloat clickX;
-    GLfloat clickY;
+    int lastX;
+    int lastY;
 
-    GLfloat movedX;
-    GLfloat movedY;
-
-    bool increasing;
-    bool justClicked;
-
-    int button;
     int state;
 };
 
