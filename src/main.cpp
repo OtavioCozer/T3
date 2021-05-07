@@ -313,7 +313,7 @@ void keyup(unsigned char key, int x, int y) {
     glutPostRedisplay();
 }
 
-void ResetKeyStatus() {
+void resetKeyStatus() {
     for (int i = 0; i < 256; i++) {
         keyStatus[i] = 0;
     }
@@ -356,7 +356,7 @@ void init(char *const fileName) {
 
     readXml(fileName);
     mouse.state = 0;
-    ResetKeyStatus();
+    resetKeyStatus();
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);

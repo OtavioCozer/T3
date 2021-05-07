@@ -28,6 +28,7 @@ public:
 private:
     GLuint textureFloor{};
     GLuint textureWall{};
+    GLfloat textureSpace{};
     GLfloat materialAmbient[4] = {0.1, 0.1, 0.1, 1};
     GLfloat materialDiffuse[4] = {5, 5, 5, 1};
     GLfloat materialSpecular[4] = {5, 5, 5, 1};
@@ -36,6 +37,8 @@ private:
     GLfloat color[4] = {1, 1, 1, 1};
 
     void drawRectangle(GLuint texture, norm n, GLfloat w, GLfloat h, int divide);
+
+    void drawCube(GLuint texture, GLfloat size);
 };
 
 
