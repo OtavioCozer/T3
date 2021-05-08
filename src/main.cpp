@@ -237,7 +237,7 @@ void changeCamera(int state) {
         camera.centerZ = target.z;
 
         camera.eyeX = camera.r * cos(Utils::degToRad(camera.XYAngle)) * cos(Utils::degToRad(camera.XZAngle));
-        camera.eyeY = camera.r * -sin(Utils::degToRad(camera.XZAngle));
+        camera.eyeY = camera.r * sin(Utils::degToRad(camera.XZAngle));
         camera.eyeZ = camera.r * sin(Utils::degToRad(camera.XYAngle)) * cos(Utils::degToRad(camera.XZAngle));
     }
 }
@@ -293,6 +293,8 @@ void keyPress(unsigned char key, int x, int y) {
             break;
         case '3':
             camera.r = 3 * 100;
+            camera.XYAngle = +20;
+            camera.XZAngle = 270 - mp1.angle ;
             changeCamera(3);
             break;
         case '+':
@@ -342,7 +344,7 @@ void motion(int x, int y) {
     mouse.lastY = y;
 
     camera.centerX = cos(Utils::degToRad(camera.XYAngle)) * cos(Utils::degToRad(camera.XZAngle));
-    camera.centerY = -sin(Utils::degToRad(camera.XZAngle));
+    camera.centerY = sin(Utils::degToRad(camera.XZAngle));
     camera.centerZ = sin(Utils::degToRad(camera.XYAngle)) * cos(Utils::degToRad(camera.XZAngle));
 }
 
@@ -383,6 +385,9 @@ void drawAxes(double size, GLfloat x, GLfloat y, GLfloat z) {
     glDisable(GL_LIGHTING);
     glDisable(GL_TEXTURE_2D);
 
+    glPushMatrix();
+    glTranslatef(x, y, z);
+
     //x axis
     glPushMatrix();
     glColor3fv(color_r);
@@ -409,6 +414,7 @@ void drawAxes(double size, GLfloat x, GLfloat y, GLfloat z) {
     glutSolidCube(1.0);
     glPopMatrix();
 
+    glPopMatrix();
     glPopAttrib();
 }
 
@@ -536,7 +542,7 @@ void myDisplay() {
         camera.centerZ = target.z;
 
         camera.eyeX = camera.r * cos(Utils::degToRad(camera.XZAngle)) * cos(Utils::degToRad(camera.XYAngle)) + target.x;
-        camera.eyeY = camera.r * -sin(Utils::degToRad(camera.XYAngle)) + target.y;
+        camera.eyeY = camera.r * sin(Utils::degToRad(camera.XYAngle)) + target.y;
         camera.eyeZ = camera.r * sin(Utils::degToRad(camera.XZAngle)) * cos(Utils::degToRad(camera.XYAngle)) + target.z;
 
         gluLookAt(camera.eyeX, camera.eyeY, camera.eyeZ, camera.centerX, camera.centerY, camera.centerZ, camera.upX,
