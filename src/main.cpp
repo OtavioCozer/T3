@@ -33,6 +33,7 @@ bool gameOver = false;
 bool nightMode = false;
 bool textureEnabled = true;
 bool drawLights = false;
+bool axes = false;
 static char str[1000];
 
 void readXml(char *const fileName) {
@@ -277,6 +278,9 @@ void keyPress(unsigned char key, int x, int y) {
         case 'm':
             arena.dWall = !arena.dWall;
             break;
+        case 'e':
+            axes = !axes;
+            break;
         case 'n':
         case 'N':
             nightMode = !nightMode;
@@ -445,7 +449,7 @@ void defineLight() {
         glLightfv(GL_LIGHT2, GL_DIFFUSE, diffuse);
         glLightfv(GL_LIGHT2, GL_SPECULAR, specular);
 
-        if(drawLights) {
+        if (drawLights) {
             glDisable(GL_LIGHTING);
             glPointSize(15);
             glColor3f(1.0, 1.0, 0.0);
@@ -467,7 +471,7 @@ void defineLight() {
         glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
         glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
 
-        if(drawLights) {
+        if (drawLights) {
             glDisable(GL_LIGHTING);
             glPointSize(15);
             glColor3f(1.0, 1.0, 0.0);
@@ -541,7 +545,10 @@ void myDisplay() {
 
     defineLight();
 
-    drawAxes(50, 0, 0, 0);
+    if(axes) {
+        drawAxes(50, arena.x, 0, arena.z);
+    }
+
 
     gameOver = mp1.score >= 10 || mp2.score >= 10;
 
