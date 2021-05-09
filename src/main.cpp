@@ -16,9 +16,9 @@
 #define HEIGHT_MAIN 500
 #define HEIGHT_ENEMY 250
 
-//#define WIDTH 600
+//#define WIDTH 1000
 //#define HEIGHT_MAIN 600
-//#define HEIGHT_ENEMY 400
+//#define HEIGHT_ENEMY 300
 
 int keyStatus[256];
 
@@ -98,29 +98,30 @@ void drawMap(GLfloat x, GLfloat y, GLfloat z, GLfloat r, GLfloat g, GLfloat b) {
     glDisable(GL_LIGHTING);
     glDisable(GL_TEXTURE_2D);
 
-    GLfloat x1 = (mp1.x - arena.x) / arena.width;
-    GLfloat y1 = (mp1.z - arena.z) / arena.height;
-    GLfloat x2 = (mp2.x - arena.x) / arena.width;
-    GLfloat y2 = (mp2.z - arena.z) / arena.height;
+    GLfloat x1 = ((mp1.x - arena.x) / arena.width) * WIDTH;
+    GLfloat y1 = ((mp1.z - arena.z) / arena.height) * HEIGHT_MAIN;
+    GLfloat x2 = ((mp2.x - arena.x) / arena.width) * WIDTH;;
+    GLfloat y2 = ((mp2.z - arena.z) / arena.height) * HEIGHT_MAIN;
 
     x1 = (x1 / 4) + x;
     y1 = (y1 / 4) + y;
     x2 = (x2 / 4) + x;
     y2 = (y2 / 4) + y;
 
-    GLfloat size = 0.249;
+    GLfloat sizex = 0.249 * WIDTH;
+    GLfloat sizey = 0.249 * HEIGHT_MAIN;
 
     glColor3f(r, g, b);
     glLineWidth(3);
     glBegin(GL_LINE_LOOP);
     glVertex3f(x, y, z);
-    glVertex3f(x + size, y, z);
-    glVertex3f(x + size, y + size, z);
-    glVertex3f(x, y + size, z);
+    glVertex3f(x + sizex, y, z);
+    glVertex3f(x + sizex, y + sizey, z);
+    glVertex3f(x, y + sizey, z);
     glEnd();
 
     int num_segments = 15;
-    float rc = 0.02;
+    float rc = 0.02 * WIDTH;
 
     float theta;
     float xc;
@@ -163,10 +164,10 @@ void drawHud() {
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
-    glOrtho(0, 1, 0, 1, -1, 1);
+    glOrtho(0, WIDTH, 0, HEIGHT_MAIN, -1, 1);
 
     sprintf(str, "Jogador: %d Computador: %d", mp1.score, mp2.score);
-    drawChars(0.3, 0.95, 0, str, 1, 0, 0);
+    drawChars(0.3 * WIDTH, 0.95 * HEIGHT_MAIN, 0, str, 1, 0, 0);
 
     if (camera.state == 1) {
         sprintf(str, "Camera 1");
@@ -175,9 +176,9 @@ void drawHud() {
     } else if (camera.state == 3) {
         sprintf(str, "Camera 3");
     }
-    drawChars(0.1, 0.95, 0, str, 1, 0, 0);
+    drawChars(0.1 * WIDTH, 0.95 * HEIGHT_MAIN, 0, str, 1, 0, 0);
 
-    drawMap(0.749, 0.01, 0, 0, 0, 1);
+    drawMap(0.749 * WIDTH, 0.01 * HEIGHT_MAIN, 0, 0, 0, 1);
 
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
@@ -294,7 +295,7 @@ void keyPress(unsigned char key, int x, int y) {
         case '3':
             camera.r = 3 * MODEL_SCALE;
             camera.XYAngle = +20;
-            camera.XZAngle = 270 - mp1.angle ;
+            camera.XZAngle = 270 - mp1.angle;
             changeCamera(3);
             break;
         case '+':
@@ -551,7 +552,7 @@ void myDisplay() {
 
     defineLight();
 
-    if(axes) {
+    if (axes) {
         drawAxes(50, arena.x, 0, arena.z);
     }
 
