@@ -6,11 +6,11 @@
 #include "../services/Utils.h"
 
 void Arena::initialize(GLfloat _x, GLfloat _y, GLfloat _z, GLfloat _height, GLfloat _width) {
-    x = _x * ARENA_SCALE;
-    y = _y * ARENA_SCALE;
-    z = _z * ARENA_SCALE;
-    height = _height * ARENA_SCALE;
-    width = _width * ARENA_SCALE;
+    x = _x;
+    y = _y;
+    z = _z;
+    height = _height;
+    width = _width;
 }
 
 

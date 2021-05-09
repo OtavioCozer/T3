@@ -64,11 +64,11 @@ void readXml(char *const fileName) {
                     std::stof(element->Attribute("width"))
             );
         } else if (tag == "circle" && p1Color == element->Attribute("fill")) {
-            cy1 = arena.z + (arena.z + arena.height) - std::stof(element->Attribute("cy")) * ARENA_SCALE;
-            mp1.initialize(m, true, 0, std::stof(element->Attribute("cx")) * ARENA_SCALE, 0, cy1);
+            cy1 = arena.z + (arena.z + arena.height) - std::stof(element->Attribute("cy"));
+            mp1.initialize(m, true, 0, std::stof(element->Attribute("cx")), 0, cy1);
         } else if (tag == "circle") {
-            cy1 = arena.z + (arena.z + arena.height) - std::stof(element->Attribute("cy")) * ARENA_SCALE;
-            mp2.initialize(m, false, 0, std::stof(element->Attribute("cx")) * ARENA_SCALE, 0, cy1);
+            cy1 = arena.z + (arena.z + arena.height) - std::stof(element->Attribute("cy"));
+            mp2.initialize(m, false, 0, std::stof(element->Attribute("cx")), 0, cy1);
         }
     }
 
@@ -292,7 +292,7 @@ void keyPress(unsigned char key, int x, int y) {
             changeCamera(2);
             break;
         case '3':
-            camera.r = 3 * 100;
+            camera.r = 3 * MODEL_SCALE;
             camera.XYAngle = +20;
             camera.XZAngle = 270 - mp1.angle ;
             changeCamera(3);

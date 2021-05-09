@@ -5,8 +5,8 @@
 #ifndef T2_ARENA_H
 #define T2_ARENA_H
 
-#define ARENA_SCALE 2
-#define WALL_SIZE 140
+#define ARENA_SCALE 1
+#define WALL_SIZE 70
 
 #include <GL/gl.h>
 #include <GL/glut.h>
