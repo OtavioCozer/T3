@@ -16,7 +16,7 @@
 #define HEIGHT_MAIN 500
 #define HEIGHT_ENEMY 250
 
-//#define WIDTH 1000
+//#define WIDTH 600
 //#define HEIGHT_MAIN 600
 //#define HEIGHT_ENEMY 300
 
