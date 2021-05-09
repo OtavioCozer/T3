@@ -596,7 +596,7 @@ void idle() {
                 mp2.startPunch();
                 previousTimePunch = currentTime;
             } else {
-                mp2.walk(0.1 * timeDifference, mp1, arena);
+                mp2.walk(0.5 * timeDifference, mp1, arena);
                 mp2.angle = Utils::radToDeg(std::atan2(mp1.x - mp2.x, mp1.z - mp2.z));
 
             }
