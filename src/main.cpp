@@ -2,8 +2,8 @@
 #include <cstdlib>
 #include <GL/gl.h>
 #include <GL/glu.h>
-#include <string>
 #include <GL/glut.h>
+#include <string>
 #include "tinyxml/tinyxml.h"
 #include "objects/Arena.h"
 #include "input/Mouse.h"
