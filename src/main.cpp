@@ -1,16 +1,16 @@
 #include <cmath>
 #include <cstdlib>
+#include <string>
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
-#include <string>
 #include "tinyxml/tinyxml.h"
-#include "objects/Arena.h"
 #include "input/Mouse.h"
 #include "model/Model.h"
-#include "objects/ModelPlayer.h"
-#include "objects/Camera.h"
 #include "services/Utils.h"
+#include "objects/Arena.h"
+#include "objects/Camera.h"
+#include "objects/ModelPlayer.h"
 
 #define WIDTH 500
 #define HEIGHT_MAIN 500
