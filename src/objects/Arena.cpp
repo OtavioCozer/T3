@@ -19,6 +19,7 @@ void Arena::initializeTexture() {
     textureFloor = Utils::loadTexture("../resources/AdvancedFloorInterlockingOld_basecolor.bmp");
     textureWall = Utils::loadTexture("../resources/MetalPipeWallRusty_basecolor.bmp");
     textureSpace = Utils::loadTexture("../resources/seamless_space.bmp");
+
 }
 
 void Arena::draw() {
@@ -84,6 +85,9 @@ void Arena::drawWall(GLuint texture, GLfloat w, GLfloat h, int divide) {
     GLfloat w2 = w / 2;
     GLfloat h2 = h / 2;
     double textureS = 2;
+
+    GLfloat materialAmbient[] = {100, 100, 100, 100};
+    glMaterialfv(GL_FRONT, GL_AMBIENT, materialAmbient);
     glBindTexture(GL_TEXTURE_2D, texture);
 
     glBegin(GL_QUADS);

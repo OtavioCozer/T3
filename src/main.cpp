@@ -12,13 +12,13 @@
 #include "objects/Camera.h"
 #include "objects/ModelPlayer.h"
 
-#define WIDTH 500
-#define HEIGHT_MAIN 500
-#define HEIGHT_ENEMY 250
+//#define WIDTH 500
+//#define HEIGHT_MAIN 500
+//#define HEIGHT_ENEMY 250
 
-//#define WIDTH 600
-//#define HEIGHT_MAIN 600
-//#define HEIGHT_ENEMY 300
+#define WIDTH 1000
+#define HEIGHT_MAIN 630
+#define HEIGHT_ENEMY 300
 
 int keyStatus[256];
 
@@ -424,8 +424,8 @@ void defineLight() {
     glDisable(GL_LIGHT1);
     glDisable(GL_LIGHT2);
     GLfloat ambient[] = {0, 0, 0, 1};
-    GLfloat diffuse[] = {1, 1, 1, 1};
-    GLfloat specular[] = {1, 1, 1, 1};
+    GLfloat diffuse[] = {80, 80, 80, 80};
+    GLfloat specular[] = {80, 80, 80, 80};
 
     if (nightMode) {
         GLfloat cutoff[] = {35};
