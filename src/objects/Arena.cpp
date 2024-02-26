@@ -16,9 +16,9 @@ void Arena::initialize(GLfloat _x, GLfloat _y, GLfloat _z, GLfloat _height, GLfl
 
 void Arena::initializeTexture() {
     printf("loading arena texture\n");
-    textureFloor = Utils::loadTexture("../resources/AdvancedFloorInterlockingOld_basecolor.bmp");
-    textureWall = Utils::loadTexture("../resources/MetalPipeWallRusty_basecolor.bmp");
-    textureSpace = Utils::loadTexture("../resources/seamless_space.bmp");
+    textureFloor = Utils::loadTexture("./resources/AdvancedFloorInterlockingOld_basecolor.bmp");
+    textureWall = Utils::loadTexture("./resources/MetalPipeWallRusty_basecolor.bmp");
+    textureSpace = Utils::loadTexture("./resources/seamless_space.bmp");
 
 }
 
