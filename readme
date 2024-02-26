@@ -1,14 +1,15 @@
-Use o Makefile dentro da pasta src para compilar o projeto. Eh necessario que a pasta resources esteja no mesmo nivel
-que src
-Comandos:
-    - 'w', 'a', 's' e 'd' para se movimentar
-    - 'q' para socar. Deve-se esperar o fim da animaçao para poder andar ou socar novamente
-    - tecla ESPAÇO para ativar ou desativar o inimigo
-    - '1', '2' e '3' para alterar as cameras
-    - 'n' para alterar o modo de iluminaçao
-    - 't' para desativar ou ativar as texturas. Destivar a textura permite observar melhor a iluminaçao
-    - 'l' para mostrar a posiçao das luzes
-    - 'm' para ativar ou desativar os muros laterais
-    - 'e' para ativar os eixos
 
-Vídeo de funciionamento: https://www.youtube.com/watch?v=quHvdM2pwwk
+To compile the project using the Makefile inside the src folder, the resources folder needs to be at the same level as src.
+
+Commands:
+
+'w', 'a', 's', and 'd' to move
+'q' to punch. You must wait for the end of the animation to move or punch again
+SPACE key to activate or deactivate the enemy
+'1', '2', and '3' to change cameras
+'n' to change lighting mode
+'t' to enable or disable textures. Disabling textures allows for better observation of lighting
+'l' to show the position of lights
+'m' to enable or disable side walls
+'e' to activate axes
+Video of operation: https://www.youtube.com/watch?v=quHvdM2pwwk
